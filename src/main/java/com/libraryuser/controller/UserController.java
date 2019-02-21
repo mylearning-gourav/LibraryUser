@@ -30,7 +30,8 @@ public class UserController {
 
 		ResultBean resultBean = new ResultBean();
 		HashMap<String, List> userResultMap = new HashMap<String, List>();
-		userResultMap.put("Result", userService.getUsers(user));
+		List<User> users = userService.getUsers(user);
+		userResultMap.put("Users", users);
 		resultBean.setResult(userResultMap);
 		return resultBean;
 	}
