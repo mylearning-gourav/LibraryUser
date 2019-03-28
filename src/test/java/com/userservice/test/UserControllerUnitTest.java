@@ -1,13 +1,24 @@
 package com.userservice.test;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -15,14 +26,10 @@ import com.libraryuser.controller.UserController;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
 
-
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import org.springframework.http.*;
-
+/*
+ * Test Class for User Controller Test
+ */
+@RunWith(MockitoJUnitRunner.class)
 public class UserControllerUnitTest {
 	
 	private MockMvc mockMvc;
@@ -39,7 +46,16 @@ public class UserControllerUnitTest {
 		mockMvc = MockMvcBuilders
 					.standaloneSetup(userController)
 					.build();
+//		ReflectionTestUtils.setField( mockMvc, "userService", userService );
 	}
+	
+	/*@Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        // this must be called for the @Mock annotations above to be processed.
+        MockitoAnnotations.initMocks(this);
+    }*/
 	
 	@Test
 	public void testGetUserSuccess() throws Exception {

@@ -10,12 +10,18 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/*
+ * Application Configuration Class
+ */
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages="com.libraryuser.*")
 public class AppConfiguration {
 	
+	/*
+	 * Method to create and return datasource
+	 */
 	@Bean(name="dataSource")
 	public DataSource getDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -27,6 +33,9 @@ public class AppConfiguration {
 		return dataSource;
 	}
 	
+	/*
+	 * Method to define transaction manager
+	 */
 	@Bean(name="transactionManager")
 	public DataSourceTransactionManager getTransactionManager() {
 		DataSourceTransactionManager txManager = new DataSourceTransactionManager();
