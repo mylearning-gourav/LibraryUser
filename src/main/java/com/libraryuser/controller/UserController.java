@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libraryuser.bean.ResultBean;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.exception.BadRequestException;
 
 @RestController
 @RequestMapping("/user")
@@ -34,6 +35,19 @@ public class UserController {
 		userResultMap.put("Users", users);
 		resultBean.setResult(userResultMap);
 		return resultBean;
+	}
+	
+	/**
+	 * All Other Request
+	 * @param
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/**", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
+	public void allOtherAccessTypeOtherRequest() throws Exception {
+		System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+//		logger.debug("Bad Get Request Controller");
+		throw new BadRequestException();
 	}
 
 }
