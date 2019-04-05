@@ -26,13 +26,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.libraryuser.controller.UserController;
+import com.libraryuser.exception.GlobalExceptionHandler;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
 
 /*
  * Test Class for User Controller Test
  */
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class UserControllerUnitTest {
 	
 	private MockMvc mockMvc;
@@ -48,17 +49,10 @@ public class UserControllerUnitTest {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders
 					.standaloneSetup(userController)
+					.setControllerAdvice(new GlobalExceptionHandler())
 					.build();
 //		ReflectionTestUtils.setField( mockMvc, "userService", userService );
 	}
-	
-	/*@Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-
-        // this must be called for the @Mock annotations above to be processed.
-        MockitoAnnotations.initMocks(this);
-    }*/
 	
 	@Test
 	public void testGetUserSuccess() throws Exception {
@@ -86,7 +80,7 @@ public class UserControllerUnitTest {
 	 * Test case for wrong get URL
 	 */
 	@Test
-	public void noRequestFoundGet() throws Exception {	
+	public void testNoRequestFoundGet() throws Exception {	
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.get("/hgh/aassdd");
 		this.mockMvc.perform(requestBuilder)
@@ -97,7 +91,7 @@ public class UserControllerUnitTest {
 	 * Test case for wrong post URL
 	 */
 	@Test
-	public void noRequestFoundPost() throws Exception {	
+	public void testNoRequestFoundPost() throws Exception {	
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/badurl/badurl");
 		this.mockMvc.perform(requestBuilder)
@@ -107,27 +101,23 @@ public class UserControllerUnitTest {
 	/*
 	 * Test case for bad get url requests
 	 */
-	/*@Test
-	public void badGetRequest() throws Exception {
+	@Test
+	public void testBadGetRequest() throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.get("/user/badurl");
 		this.mockMvc.perform(requestBuilder)
-		.andDo(print())
-//			.andExpect(status().isBadRequest());
-			.andExpect(status().isNotFound());
-	}*/
+			.andExpect(status().isBadRequest());
+	}
 	
 	/*
 	 * Test case for bad post url requests
 	 */
-	/*@Test
-	public void badPostRequest() throws Exception {
+	@Test
+	public void testBadPostRequest() throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/user/badurl");
 		this.mockMvc.perform(requestBuilder)
-		.andDo(print())
-//			.andExpect(status().isBadRequest());
-			.andExpect(status().isNotFound());
-	}*/
+			.andExpect(status().isBadRequest());
+	}
 
 }
