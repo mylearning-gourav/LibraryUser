@@ -7,7 +7,10 @@ public class BadRequestException extends CustomException {
 
 	private static final long serialVersionUID = 100L;
 	
-	public BadRequestException() {
-		
-	}
+	public BadRequestException(String errorMessage) {
+        super(errorMessage);
+    }
+    public BadRequestException() {
+        super();
+    }
 }

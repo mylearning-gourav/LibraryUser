@@ -82,8 +82,9 @@ public class UserControllerUnitTest {
 	@Test
 	public void testNoRequestFoundGet() throws Exception {	
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.get("/hgh/aassdd");
+				.get("/badurl/badurl");
 		this.mockMvc.perform(requestBuilder)
+			.andDo(print())
 			.andExpect(status().isNotFound());
 	}
 	
@@ -95,6 +96,7 @@ public class UserControllerUnitTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/badurl/badurl");
 		this.mockMvc.perform(requestBuilder)
+			.andDo(print())
 			.andExpect(status().isNotFound());
 	}
 	
@@ -106,6 +108,7 @@ public class UserControllerUnitTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.get("/user/badurl");
 		this.mockMvc.perform(requestBuilder)
+			.andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 	
@@ -117,7 +120,19 @@ public class UserControllerUnitTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/user/badurl");
 		this.mockMvc.perform(requestBuilder)
+			.andDo(print())
 			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test case for test get url requests
+	 */
+	@Test
+	public void testTestGetRequest() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/user/testuser");
+		this.mockMvc.perform(requestBuilder)
+			.andExpect(status().isInternalServerError());
 	}
 
 }
