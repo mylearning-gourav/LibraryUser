@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.controller.UserController;
 import com.libraryuser.exception.GlobalExceptionHandler;
 import com.libraryuser.model.User;
@@ -54,8 +56,11 @@ public class UserControllerUnitTest {
 //		ReflectionTestUtils.setField( mockMvc, "userService", userService );
 	}
 	
+	/*
+	 * Test Case Success for all users
+	 */
 	@Test
-	public void testGetUserSuccess() throws Exception {
+	public void testGetAllUsersSuccess() throws Exception {
 		
 		List<User> users = Arrays.asList(
 				new User(1, "Gourav Singh", "gouravsingh@gmail.com", true, 1),
@@ -63,7 +68,7 @@ public class UserControllerUnitTest {
 				);
 		when(userService.getUsers(isA(User.class))).thenReturn(users);
 		
-		mockMvc.perform(post("/user/getusers"))
+		mockMvc.perform(get(ApplicationConstants.GET_USER))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -77,15 +82,59 @@ public class UserControllerUnitTest {
 	}
 	
 	/*
+	 * Test Case Success for searching user by id
+	 */
+	@Test
+	public void testGetUserByIdSuccess() throws Exception {
+		
+		List<User> users = Arrays.asList(
+				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
+				);
+		when(userService.getUsers(isA(User.class))).thenReturn(users);
+		
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("id", "2").param("id", "3"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")))
+			.andExpect(jsonPath("$.result.Users", hasSize(1)))
+			.andExpect(jsonPath("$.result.Users[0].name", is("Sonali Singh")))
+			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
+	}
+	
+	/*
+	 * Test Case Success for searching user by name
+	 */
+	@Test
+	public void testGetUserByNameSuccess() throws Exception {
+		
+		List<User> users = Arrays.asList(
+				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
+				);
+		when(userService.getUsers(isA(User.class))).thenReturn(users);
+		
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("name", "Sonali Singh"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")))
+			.andExpect(jsonPath("$.result.Users", hasSize(1)))
+			.andExpect(jsonPath("$.result.Users[0].name", is("Sonali Singh")))
+			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
+	}
+	
+	/*
 	 * Test case for wrong get URL
 	 */
 	@Test
 	public void testNoRequestFoundGet() throws Exception {	
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.get("/badurl/badurl");
+				.get("/user");
 		this.mockMvc.perform(requestBuilder)
 			.andDo(print())
-			.andExpect(status().isNotFound());
+			.andExpect(status().isBadRequest());
 	}
 	
 	/*
@@ -94,10 +143,10 @@ public class UserControllerUnitTest {
 	@Test
 	public void testNoRequestFoundPost() throws Exception {	
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.post("/badurl/badurl");
+				.post("/user");
 		this.mockMvc.perform(requestBuilder)
 			.andDo(print())
-			.andExpect(status().isNotFound());
+			.andExpect(status().isBadRequest());
 	}
 	
 	/*
@@ -125,14 +174,14 @@ public class UserControllerUnitTest {
 	}
 	
 	/*
-	 * Test case for test get url requests
+	 * Test case for health check service
 	 */
 	@Test
 	public void testTestGetRequest() throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.get("/user/testuser");
+				.get(ApplicationConstants.HEALTH_CHECK);
 		this.mockMvc.perform(requestBuilder)
-			.andExpect(status().isInternalServerError());
+			.andExpect(status().isOk());
 	}
 
 }
