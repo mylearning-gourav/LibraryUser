@@ -48,12 +48,12 @@ public class UserController {
 		if(name != null && !name.isEmpty())
 			user.setName(name);
 		if(email != null && !email.isEmpty())
-			user.setName(email);
+			user.setEmail(email);
 		if(active != null && (active == true || active == false))
 			user.setActive(active);
 		if(role != null && role != 0)
 			user.setRoleId(role);
-		System.out.println("Nameqq = " + user.getName());
+		System.out.println("Nameqq = " + user.getEmail());
 		List<User> users = userService.getUsers(user);
 		userResultMap.put("Users", users);
 		resultBean.setResult(userResultMap);
