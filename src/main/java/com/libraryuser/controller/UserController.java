@@ -3,6 +3,7 @@ package com.libraryuser.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,8 @@ import com.libraryuser.service.UserService;
 @RestController
 public class UserController {
 	
+	private static final Logger logger = Logger.getLogger(UserController.class);
+	
 	@Autowired
 	UserService userService;
 	
@@ -37,6 +40,8 @@ public class UserController {
 								@RequestParam(required=false) String email,
 								@RequestParam(required=false) Boolean active, 
 								@RequestParam(required=false) Integer role) throws Exception {
+		
+		logger.info("Get Users Controller");
 
 		ResultBean resultBean = new ResultBean();
 		HashMap<String, List> userResultMap = new HashMap<String, List>();
@@ -53,7 +58,7 @@ public class UserController {
 			user.setActive(active);
 		if(role != null && role != 0)
 			user.setRoleId(role);
-		System.out.println("Nameqq = " + user.getEmail());
+
 		List<User> users = userService.getUsers(user);
 		userResultMap.put("Users", users);
 		resultBean.setResult(userResultMap);
@@ -68,6 +73,7 @@ public class UserController {
 	 */
 	@RequestMapping(value=ApplicationConstants.HEALTH_CHECK, method=RequestMethod.GET)
 	public void userServiceHealthCheck() throws Exception {
+		logger.info("Health Check Controller");
 //		throw new Exception();
 	}
 	
@@ -93,6 +99,7 @@ public class UserController {
 	@RequestMapping(value="/**", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 	public void allOtherAccessTypeOtherRequest() throws Exception {
 //		logger.debug("Bad Get Request Controller");
+		logger.info("Wrong Controller Method Called");
 		throw new BadRequestException();
 	}
 
