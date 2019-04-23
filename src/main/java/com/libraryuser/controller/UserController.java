@@ -66,6 +66,20 @@ public class UserController {
 	}
 	
 	/**
+	 * Add Users
+	 * @param user
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value=ApplicationConstants.ADD_USER, method=RequestMethod.POST)
+	public ResultBean addUser(User user) throws Exception {
+		logger.info("Add User Controller");
+
+		ResultBean resultBean = new ResultBean();
+		return resultBean;
+	}
+	
+	/**
 	 * Health Check Service
 	 * @Param 
 	 * @return 

@@ -1,5 +1,6 @@
 package com.libraryuser.exception;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,10 +9,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.libraryuser.bean.ApiErrorResponse;
+import com.libraryuser.dao.UserDaoImpl;
 
 @EnableWebMvc
 @ControllerAdvice(basePackages = {"com.libraryuser.controller"} )
 public class GlobalExceptionHandler {
+	
+	private static final Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
 	
 	/**
 	 * Exception Handler function
@@ -21,6 +25,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiErrorResponse> exceptionHandler(Exception ex) {
+		logger.info("Exception: " + ex.getMessage());
 		ApiErrorResponse error = new ApiErrorResponse();
 		error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -45,6 +50,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ApiErrorResponse> badRequestExceptionHandler(Exception ex) {
+		logger.info("Bad Request Exception: " + ex.getMessage());
 		ApiErrorResponse error = new ApiErrorResponse();
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
