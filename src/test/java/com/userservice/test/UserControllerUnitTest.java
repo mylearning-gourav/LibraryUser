@@ -82,7 +82,7 @@ public class UserControllerUnitTest {
 		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER))
 			.andDo(print())
-			.andExpect(status().isOk());
+			.andExpect(status().isNotFound());
 	}
 	
 	/*
@@ -121,7 +121,7 @@ public class UserControllerUnitTest {
 				);
 		when(userService.getUsers(isA(User.class))).thenReturn(users);
 		
-		mockMvc.perform(get(ApplicationConstants.GET_USER).param("id", "2").param("id", "3"))
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("id", "2"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType("application/json;charset=UTF-8"))

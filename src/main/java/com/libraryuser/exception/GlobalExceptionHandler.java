@@ -58,6 +58,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.BAD_REQUEST);
     }
 	
+	/**
+	 * RequestValidationException Handler function
+	 * @param 
+	 * @return ResponseEntity
+	 * @throws 
+	 */
+	@ExceptionHandler(RequestValidationException.class)
+	public ResponseEntity<ApiErrorResponse> requestValidationExceptionHandler(Exception ex) {
+		logger.info("Bad Request Exception: " + ex.getMessage());
+		ApiErrorResponse error = new ApiErrorResponse();
+		error.setStatus(HttpStatus.NOT_FOUND);
+		error.setErrorCode(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.NOT_FOUND);
+    }
+	
 	/*@ExceptionHandler(BadRequestException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason = "Bad Request URL")
 	public @ResponseBody ResultBean handleBadRequestException() {

@@ -1,5 +1,8 @@
 package com.libraryuser.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.stereotype.Component;
 
 /*@Entity
@@ -11,8 +14,14 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")*/
 	private int userId;
+	@NotNull
+	@Size(min=2, message="Name should have atleast 2 characters")
 	private String name;
+	@NotNull
+	@Size(min=10, message="Email should have atleast 10 characters")
 	private String email;
+	@NotNull
+	@Size(min=8, message="Password should have atleast 8 characters")
 	private String password;
 	private boolean active;
 	/*@Column(name="role_id")*/
