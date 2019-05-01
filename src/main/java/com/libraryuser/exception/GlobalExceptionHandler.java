@@ -68,10 +68,10 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiErrorResponse> requestValidationExceptionHandler(Exception ex) {
 		logger.info("Bad Request Exception: " + ex.getMessage());
 		ApiErrorResponse error = new ApiErrorResponse();
-		error.setStatus(HttpStatus.NOT_FOUND);
-		error.setErrorCode(HttpStatus.NOT_FOUND.value());
+		error.setStatus(HttpStatus.BAD_REQUEST);
+		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
         error.setMessage(ex.getMessage());
-        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.BAD_REQUEST);
     }
 	
 	/*@ExceptionHandler(BadRequestException.class)

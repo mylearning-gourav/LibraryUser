@@ -82,7 +82,7 @@ public class UserControllerUnitTest {
 		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER))
 			.andDo(print())
-			.andExpect(status().isNotFound());
+			.andExpect(status().isBadRequest());
 	}
 	
 	/*

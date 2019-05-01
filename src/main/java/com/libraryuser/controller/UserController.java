@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -80,8 +81,15 @@ public class UserController {
 	public ResultBean addUser(@Valid @ModelAttribute("user") User user, BindingResult result) throws Exception {
 		logger.info("Add User Controller");
 		if(result.hasErrors()) {
+			/*System.out.println("Res 1 : " + result.getAllErrors().stream());
+			System.out.println("Res 1 : " + result.getAllErrors().size());
+			System.out.println("Res 1 : " + result.getAllErrors().get(0).getDefaultMessage());
+			System.out.println("Res 2 : " + result.getAllErrors().get(1).getObjectName());
+			System.out.println("Res 3 : " + result.getAllErrors().get(2).getObjectName());
+			System.out.println("Res 4 : " + result.getAllErrors().get(3).getObjectName());*/
 			logger.info("Add User Request Param Error: " + result.toString());
 			throw new RequestValidationException("Request Params Not Valid");
+//			throw new MethodArgumentNotValidException(null, result);
 		}
 		else {
 			logger.info("Add User No Error");

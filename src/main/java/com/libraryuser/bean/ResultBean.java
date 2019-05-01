@@ -2,6 +2,7 @@ package com.libraryuser.bean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ public class ResultBean {
 	
 	private int statusCode;
 	private String statusMessage;
-	private HashMap<String, List> result;
+	private Map<String, List> result;
 	
 	public ResultBean() {
 		statusCode = 2000;
@@ -44,11 +45,11 @@ public class ResultBean {
 		this.statusMessage = statusMessage;
 	}
 
-	public HashMap<String, List> getResult() {
+	public Map<String, List> getResult() {
 		return result;
 	}
 
-	public void setResult(HashMap<String, List> result) {
+	public void setResult(Map<String, List> result) {
 		this.result = result;
 	}
 }
