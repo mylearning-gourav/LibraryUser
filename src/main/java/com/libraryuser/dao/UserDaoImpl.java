@@ -63,6 +63,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		logger.debug("SQL Statement: " + selectUserStatement);
 		logger.debug("Email: " + user.getEmail());
 		logger.debug("Role: " + user.getRoleId());
+		logger.debug("Name: " + user.getName());
 		
 		List<User> userList = jdbcTemplate.query(
 				selectUserStatement, new PreparedStatementSetter() {

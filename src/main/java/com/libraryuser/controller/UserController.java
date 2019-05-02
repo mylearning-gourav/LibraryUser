@@ -64,6 +64,9 @@ public class UserController {
 			user.setActive(active);
 		if(role != null && role != 0)
 			user.setRoleId(role);
+		
+		
+		System.out.println("Params: " + id + "    " + name + "     " + email + "     " + active + "     " + role + "   ");
 
 		List<User> users = userService.getUsers(user);
 		userResultMap.put("Users", users);

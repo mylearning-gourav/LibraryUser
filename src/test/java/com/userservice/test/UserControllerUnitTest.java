@@ -62,24 +62,6 @@ public class UserControllerUnitTest {
 	@Test
 	public void testAddUsersSuccess() throws Exception {
 		
-		/*List<User> users = Arrays.asList(
-				new User(1, "Gourav Singh", "gouravsingh@gmail.com", true, 1),
-				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
-				);
-		when(userService.getUsers(isA(User.class))).thenReturn(users);
-		
-		mockMvc.perform(get(ApplicationConstants.GET_USER))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(content().contentType("application/json;charset=UTF-8"))
-			.andExpect(jsonPath("$.statusCode", is(2000)))
-			.andExpect(jsonPath("$.statusMessage", is("Success")))
-			.andExpect(jsonPath("$.result.Users", hasSize(2)))
-			.andExpect(jsonPath("$.result.Users[0].name", is("Gourav Singh")))
-			.andExpect(jsonPath("$.result.Users[1].name", is("Sonali Singh")))
-			.andExpect(jsonPath("$.result.Users[0].email", is("gouravsingh@gmail.com")))
-			.andExpect(jsonPath("$.result.Users[1].email", is("sonalisingh@gmail.com")));*/
-		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER))
 			.andDo(print())
 			.andExpect(status().isBadRequest());
@@ -144,6 +126,50 @@ public class UserControllerUnitTest {
 		when(userService.getUsers(isA(User.class))).thenReturn(users);
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("name", "Sonali Singh"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")))
+			.andExpect(jsonPath("$.result.Users", hasSize(1)))
+			.andExpect(jsonPath("$.result.Users[0].name", is("Sonali Singh")))
+			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
+	}
+	
+	/*
+	 * Test Case Success for searching user by email
+	 */
+	@Test
+	public void testGetUserByEmailSuccess() throws Exception {
+		
+		List<User> users = Arrays.asList(
+				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
+				);
+		when(userService.getUsers(isA(User.class))).thenReturn(users);
+		
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("email", "sonalisingh@gmail.com"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")))
+			.andExpect(jsonPath("$.result.Users", hasSize(1)))
+			.andExpect(jsonPath("$.result.Users[0].name", is("Sonali Singh")))
+			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
+	}
+	
+	/*
+	 * Test Case Success for searching user by Role
+	 */
+	@Test
+	public void testGetUserByRoleSuccess() throws Exception {
+		
+		List<User> users = Arrays.asList(
+				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
+				);
+		when(userService.getUsers(isA(User.class))).thenReturn(users);
+		
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("role", "1"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
