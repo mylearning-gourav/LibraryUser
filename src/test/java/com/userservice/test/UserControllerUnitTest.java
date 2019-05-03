@@ -180,6 +180,46 @@ public class UserControllerUnitTest {
 			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
 	}
 	
+	/******************************************************************************************************/
+	/*
+	 * Test Case Success for searching user by Role
+	 */
+	/*@Test
+	public void integrationTestGetUserByActiveSuccess() throws Exception {
+		
+		mockMvc.perform(get(ApplicationConstants.GET_USER).param("active", "true"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")))
+			.andExpect(jsonPath("$.result.Users", hasSize(4)));
+	}*/
+	
+	/*
+	 * Test Case Success for searching user by Role
+	 */
+	@Test
+	public void integrationTestAddUserSuccess() throws Exception {
+		
+		mockMvc.perform(get(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	
+	
+	
+	/******************************************************************************************************/
+	
 	/*
 	 * Test case for wrong get URL
 	 */

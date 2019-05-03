@@ -44,7 +44,7 @@ public class UserController {
 	public ResultBean getUsers(@RequestParam(required=false) Integer id,
 								@RequestParam(required=false) String name,
 								@RequestParam(required=false) String email,
-								@RequestParam(required=false) Boolean active, 
+								@RequestParam(required=false) String active, 
 								@RequestParam(required=false) Integer role) throws Exception {
 		
 		logger.info("Get Users Controller");
@@ -60,8 +60,14 @@ public class UserController {
 			user.setName(name);
 		if(email != null && !email.isEmpty())
 			user.setEmail(email);
-		if(active != null && (active == true || active == false))
-			user.setActive(active);
+		if(active != null && !active.isEmpty()) {
+			if(active.equalsIgnoreCase(ApplicationConstants.CONSTANT_TRUE))
+				user.setActive(true);
+			else if(active.equalsIgnoreCase(ApplicationConstants.CONSTANT_FALSE))
+				user.setActive(false);
+			else
+				user.setActive(null);
+		}
 		if(role != null && role != 0)
 			user.setRoleId(role);
 		
@@ -92,11 +98,16 @@ public class UserController {
 			System.out.println("Res 4 : " + result.getAllErrors().get(3).getObjectName());*/
 			logger.info("Add User Request Param Error: " + result.toString());
 			throw new RequestValidationException("Request Params Not Valid");
-//			throw new MethodArgumentNotValidException(null, result);
 		}
 		else {
 			logger.info("Add User No Error");
 			ResultBean resultBean = new ResultBean();
+			if(user.isActive() == null) {
+				user.setActive(true);
+			}
+			if(user.getRoleId() == 0) {
+				user.setRoleId(1);
+			}
 			return resultBean;
 		}
 	}

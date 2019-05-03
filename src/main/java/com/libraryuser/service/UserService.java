@@ -4,9 +4,15 @@ import java.util.List;
 
 import com.libraryuser.model.User;
 
+/**
+ * @author User
+ * User Service Interface
+ */
 public interface UserService {
 	
 	public List getUsers(User user) throws Exception;
+	
+	public void addUsers(User user) throws Exception;
 
 	/*public void registerNewUser(User user) throws Exception;
 

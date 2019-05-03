@@ -14,7 +14,7 @@ import com.libraryuser.model.User;
 
 /**
  * @author User
- *
+ * User Service Impl Class
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -24,9 +24,25 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserDao userDao;
 
+	/**
+	 * Get Users Service
+	 * @param user
+	 * @return List
+	 * @throws Exception
+	 */
 	public List getUsers(User user) throws Exception {
 		logger.info("Get Users Service");
 		return userDao.getUsers(user);
+	}
+
+	/**
+	 * Add Users Service
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	public void addUsers(User user) throws Exception {
+		logger.info("Add User Service");
 	}
 
 }

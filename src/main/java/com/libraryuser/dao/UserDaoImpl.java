@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -17,25 +18,27 @@ import org.springframework.stereotype.Repository;
 
 import com.libraryuser.mapper.UserMapper;
 import com.libraryuser.model.User;
+import org.springframework.jdbc.core.PreparedStatementCallback;  
 
 @Repository("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	
 	private static final Logger logger = Logger.getLogger(UserDaoImpl.class);
 	
-	/*@Autowired
-	DataSource dataSource;*/
-	
 	private JdbcTemplate jdbcTemplate;
-//	NamedParameterJdbcTemplate jdbcNamedTemplate;
 	
 	@Autowired
 	public UserDaoImpl(DataSource dataSource) {
 		this.setDataSource(dataSource);
 		jdbcTemplate = new JdbcTemplate(this.getDataSource());
-//		jdbcNamedTemplate = new NamedParameterJdbcTemplate(this.getDataSource());
 	}
 
+	/**
+	 * Get Users Service
+	 * @param user
+	 * @return List
+	 * @throws Exception
+	 */
 	public List getUsers(User user) throws Exception {
 		
 		logger.info("Get Users Dao");
@@ -59,44 +62,81 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 			selectUserStatement += " AND role_id = ?";
 			paramMap.put("role", user.getRoleId());
 		}
+		if(user.isActive() != null) {
+			selectUserStatement += " AND active = ?";
+			paramMap.put("active", user.isActive());
+		}
 		
 		logger.debug("SQL Statement: " + selectUserStatement);
 		logger.debug("Email: " + user.getEmail());
 		logger.debug("Role: " + user.getRoleId());
 		logger.debug("Name: " + user.getName());
+		logger.debug("active: " + user.isActive());
 		
 		List<User> userList = jdbcTemplate.query(
-				selectUserStatement, new PreparedStatementSetter() {
+			selectUserStatement, new PreparedStatementSetter() {
 
-					public void setValues(PreparedStatement prepareStmt) throws SQLException {
+				public void setValues(PreparedStatement prepareStmt) throws SQLException {
 
-						int count = 1;
-						for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
-						    String key = entry.getKey();
-						    if(key == "name" ) {
-						    	System.out.println("NAME: " + entry.getValue() + "  COUNT: " + count);
-						    	prepareStmt.setString(count, entry.getValue().toString());
-						    }
-						    else if(key == "id" ) {
-						    	System.out.println("ID: " + entry.getValue() + "  COUNT: " + count);
-						    	prepareStmt.setInt(count, (Integer) entry.getValue());
-						    }
-						    else if(key == "email" ) {
-						    	System.out.println("EMAIL: " + entry.getValue() + "  COUNT: " + count);
-						    	prepareStmt.setString(count, entry.getValue().toString());
-						    }
-						    else if(key == "role" ) {
-						    	System.out.println("ROLELLL: " + entry.getValue() + "  COUNT: " + count);
-						    	prepareStmt.setInt(count, (Integer) entry.getValue());
-						    }
-						    count++;
-						}
+					int count = 1;
+					for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
+					    String key = entry.getKey();
+					    if(key == "name" ) {
+					    	System.out.println("NAME: " + entry.getValue() + "  COUNT: " + count);
+					    	prepareStmt.setString(count, entry.getValue().toString());
+					    }
+					    else if(key == "id" ) {
+					    	System.out.println("ID: " + entry.getValue() + "  COUNT: " + count);
+					    	prepareStmt.setInt(count, (Integer) entry.getValue());
+					    }
+					    else if(key == "email" ) {
+					    	System.out.println("EMAIL: " + entry.getValue() + "  COUNT: " + count);
+					    	prepareStmt.setString(count, entry.getValue().toString());
+					    }
+					    else if(key == "role" ) {
+					    	System.out.println("ROLELLL: " + entry.getValue() + "  COUNT: " + count);
+					    	prepareStmt.setInt(count, (Integer) entry.getValue());
+					    }
+					    else if(key == "active" ) {
+					    	System.out.println("ACTIVEEEEE: " + entry.getValue() + "  COUNT: " + count);
+					    	prepareStmt.setBoolean(count, (Boolean) entry.getValue());
+					    }
+					    count++;
 					}
+				}
 
-				},
-				new UserMapper());
+			},
+			new UserMapper());
 
 		return userList;
+	}
+
+	/**
+	 * Add Users Service
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	public void addUsers(User user) throws Exception {
+		logger.info("Add User DAO");
+		
+		String insertStatement = "INSERT INTO user(name,email,password,active,role_id)values(?,?,?,?,?)";
+		
+		jdbcTemplate.execute(insertStatement, new PreparedStatementCallback<Boolean>() {
+			@Override  
+			public Boolean doInPreparedStatement(PreparedStatement ps)  
+		            throws SQLException, DataAccessException {  
+		              
+		        ps.setString(1, user.getName());  
+		        ps.setString(2, user.getEmail());
+		        ps.setString(3, user.getPassword());
+		        ps.setBoolean(4, user.isActive());
+		        ps.setInt(5, user.getRoleId());
+		        return ps.execute();  
+		              
+		    }  
+		});
+		
 	}
 
 }

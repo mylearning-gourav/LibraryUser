@@ -140,7 +140,7 @@ public class UserIntegrationTest {
 	/*
 	 * Test Case Success for searching user by Role
 	 */
-	/*@Test
+	@Test
 	public void integrationTestGetUserByActiveSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("active", "true"))
@@ -149,7 +149,7 @@ public class UserIntegrationTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.statusCode", is(2000)))
 			.andExpect(jsonPath("$.statusMessage", is("Success")))
-			.andExpect(jsonPath("$.result.Users", hasSize(3)));
-	}*/
+			.andExpect(jsonPath("$.result.Users", hasSize(4)));
+	}
 
 }

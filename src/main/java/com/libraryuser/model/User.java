@@ -24,7 +24,7 @@ public class User {
 	@Size(min=8, message="Password should have atleast 8 characters")
 	private String password;
 	
-	private boolean active;
+	private Boolean active;
 	
 	@NotNull
 	private int roleId;
@@ -65,10 +65,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 	public int getRoleId() {
