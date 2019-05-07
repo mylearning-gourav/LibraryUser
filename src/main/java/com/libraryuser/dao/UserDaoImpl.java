@@ -119,6 +119,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User DAO");
+		System.out.println("DAO*******************************************************************");
 		
 		String insertStatement = "INSERT INTO user(name,email,password,active,role_id)values(?,?,?,?,?)";
 		
@@ -133,10 +134,28 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		        ps.setBoolean(4, user.isActive());
 		        ps.setInt(5, user.getRoleId());
 		        return ps.execute();  
-		              
 		    }  
 		});
 		
+	}
+
+	/**
+	 * Check Duplicate User
+	 * @param email
+	 * @return Boolean
+	 * @throws Exception
+	 */
+	@Override
+	public boolean checkDupicateUser(String email) throws Exception {
+		logger.info("Check Duplicate User DAO");
+		String selectStatement = "SELECT count(*) totalCount FROM user WHERE email=?";
+		
+		int count = jdbcTemplate.queryForObject(selectStatement, new Object[] { email }, Integer.class);
+		
+		if(count > 0) {
+			return true;
+		}
+		return false;
 	}
 
 }

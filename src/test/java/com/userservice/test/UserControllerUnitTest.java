@@ -53,20 +53,187 @@ public class UserControllerUnitTest {
 					.standaloneSetup(userController)
 					.setControllerAdvice(new GlobalExceptionHandler())
 					.build();
-//		ReflectionTestUtils.setField( mockMvc, "userService", userService );
+
 	}
 	
+	/******************************************Add User Test Cases*****************************************/
 	/*
 	 * Test Case Success for add user
 	 */
 	@Test
 	public void testAddUsersSuccess() throws Exception {
 		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/*
+	 * Test Case Success for add user without Roll
+	 */
+	@Test
+	public void testAddUsersSuccessNoRole() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/*
+	 * Test Case Success for add user without Active
+	 */
+	@Test
+	public void testAddUsersSuccessNoActive() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/*
+	 * Test Case Success for add user without Roll and Active
+	 */
+	@Test
+	public void testAddUsersSuccessNoRollActive() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/*
+	 * Test Case Failure for add user without name param
+	 */
+	@Test
+	public void testAddUsersFailNoName() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Failure for add user small name param
+	 */
+	@Test
+	public void testAddUsersFailSmallName() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "M")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Failure for add user without email param
+	 */
+	@Test
+	public void testAddUsersFailNoEmail() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Failure for add user small email param
+	 */
+	@Test
+	public void testAddUsersFailSmallEmail() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani@g.c")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Failure for add user without password param
+	 */
+	@Test
+	public void testAddUsersFailNoPassword() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Failure for add user small name param
+	 */
+	@Test
+	public void testAddUsersFailSmallPassword() throws Exception {
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Fail for add user without Param
+	 */
+	@Test
+	public void testAddUsersFailNoParam() throws Exception {
+		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER))
 			.andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 	
+	/******************************************Get User Test Cases*****************************************/
 	/*
 	 * Test Case Success for all users
 	 */
@@ -179,13 +346,17 @@ public class UserControllerUnitTest {
 			.andExpect(jsonPath("$.result.Users[0].name", is("Sonali Singh")))
 			.andExpect(jsonPath("$.result.Users[0].email", is("sonalisingh@gmail.com")));
 	}
-	
-	/******************************************************************************************************/
+
 	/*
-	 * Test Case Success for searching user by Role
+	 * Test Case Success for searching user by Active
 	 */
-	/*@Test
-	public void integrationTestGetUserByActiveSuccess() throws Exception {
+	@Test
+	public void testGetUserByActiveSuccess() throws Exception {
+		
+		List<User> users = Arrays.asList(
+				new User(2, "Sonali Singh", "sonalisingh@gmail.com", true, 1)
+				);
+		when(userService.getUsers(isA(User.class))).thenReturn(users);
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("active", "true"))
 			.andDo(print())
@@ -193,33 +364,10 @@ public class UserControllerUnitTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.statusCode", is(2000)))
 			.andExpect(jsonPath("$.statusMessage", is("Success")))
-			.andExpect(jsonPath("$.result.Users", hasSize(4)));
-	}*/
-	
-	/*
-	 * Test Case Success for searching user by Role
-	 */
-	@Test
-	public void integrationTestAddUserSuccess() throws Exception {
-		
-		mockMvc.perform(get(ApplicationConstants.ADD_USER)
-				.param("name", "Mani Babu")
-				.param("email", "mani_babu@gmail.com")
-				.param("password", "pada_padiba")
-				.param("active", "1")
-				.param("roleId", "1"))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(content().contentType("application/json;charset=UTF-8"))
-			.andExpect(jsonPath("$.statusCode", is(2000)))
-			.andExpect(jsonPath("$.statusMessage", is("Success")));
+			.andExpect(jsonPath("$.result.Users", hasSize(1)));
 	}
 	
-	
-	
-	
-	/******************************************************************************************************/
-	
+	/******************************************Wrong URL Test Cases*****************************************/
 	/*
 	 * Test case for wrong get URL
 	 */

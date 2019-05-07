@@ -13,6 +13,8 @@ public interface UserService {
 	public List getUsers(User user) throws Exception;
 	
 	public void addUsers(User user) throws Exception;
+	
+	public boolean checkDupicateUser(String email) throws Exception;
 
 	/*public void registerNewUser(User user) throws Exception;
 

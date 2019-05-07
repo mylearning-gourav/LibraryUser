@@ -90,12 +90,6 @@ public class UserController {
 	public ResultBean addUser(@Valid @ModelAttribute("user") User user, BindingResult result) throws Exception {
 		logger.info("Add User Controller");
 		if(result.hasErrors()) {
-			/*System.out.println("Res 1 : " + result.getAllErrors().stream());
-			System.out.println("Res 1 : " + result.getAllErrors().size());
-			System.out.println("Res 1 : " + result.getAllErrors().get(0).getDefaultMessage());
-			System.out.println("Res 2 : " + result.getAllErrors().get(1).getObjectName());
-			System.out.println("Res 3 : " + result.getAllErrors().get(2).getObjectName());
-			System.out.println("Res 4 : " + result.getAllErrors().get(3).getObjectName());*/
 			logger.info("Add User Request Param Error: " + result.toString());
 			throw new RequestValidationException("Request Params Not Valid");
 		}
@@ -108,6 +102,7 @@ public class UserController {
 			if(user.getRoleId() == 0) {
 				user.setRoleId(1);
 			}
+			userService.addUsers(user);
 			return resultBean;
 		}
 	}

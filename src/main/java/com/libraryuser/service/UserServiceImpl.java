@@ -43,6 +43,26 @@ public class UserServiceImpl implements UserService {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User Service");
+		System.out.println("Service*******************************************************************");
+		if(this.checkDupicateUser(user.getEmail())) {
+			logger.info("Duplicate User");
+		}
+		else {
+			userDao.addUsers(user);
+		}
+			
+	}
+
+	/**
+	 * Check Duplicate User
+	 * @param email
+	 * @return Boolean
+	 * @throws Exception
+	 */
+	@Override
+	public boolean checkDupicateUser(String email) throws Exception {
+		logger.info("Check Duplicate User Service");
+		return userDao.checkDupicateUser(email);
 	}
 
 }
