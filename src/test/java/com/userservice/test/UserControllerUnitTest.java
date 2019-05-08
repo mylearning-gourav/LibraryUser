@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.controller.UserController;
+import com.libraryuser.exception.DuplicateRecordException;
 import com.libraryuser.exception.GlobalExceptionHandler;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
@@ -231,6 +233,28 @@ public class UserControllerUnitTest {
 		mockMvc.perform(post(ApplicationConstants.ADD_USER))
 			.andDo(print())
 			.andExpect(status().isBadRequest());
+	}
+	
+	/*
+	 * Test Case Exception for add duplicate user
+	 */
+	@Test
+	public void testAddDuplicateUserError() throws Exception {
+		
+		doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));
+		
+		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(3001)))
+			.andExpect(jsonPath("$.status", is("CONFLICT")));
 	}
 	
 	/******************************************Get User Test Cases*****************************************/

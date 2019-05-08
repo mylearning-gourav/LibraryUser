@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.dao.UserDao;
+import com.libraryuser.exception.DuplicateRecordException;
 import com.libraryuser.model.User;
 
 /**
@@ -46,11 +48,12 @@ public class UserServiceImpl implements UserService {
 		System.out.println("Service*******************************************************************");
 		if(this.checkDupicateUser(user.getEmail())) {
 			logger.info("Duplicate User");
+			throw new DuplicateRecordException();
 		}
 		else {
 			userDao.addUsers(user);
+			logger.info("User Added");
 		}
-			
 	}
 
 	/**

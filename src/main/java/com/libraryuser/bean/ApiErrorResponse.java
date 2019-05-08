@@ -9,6 +9,15 @@ public class ApiErrorResponse {
     private String message;
     private String detail;
     
+    private static ApiErrorResponse errorResponse;
+    
+    public static ApiErrorResponse getInstance() {
+    	if(errorResponse == null) {
+    		errorResponse = new ApiErrorResponse();
+    	}
+    	return errorResponse;
+    }
+    
 	public HttpStatus getStatus() {
 		return status;
 	}

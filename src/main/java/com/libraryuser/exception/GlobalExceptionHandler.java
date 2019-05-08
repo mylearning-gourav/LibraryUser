@@ -9,6 +9,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.libraryuser.bean.ApiErrorResponse;
+import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.dao.UserDaoImpl;
 
 @EnableWebMvc
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiErrorResponse> exceptionHandler(Exception ex) {
 		logger.info("Exception: " + ex.getMessage());
-		ApiErrorResponse error = new ApiErrorResponse();
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
 		error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         error.setMessage(ex.getMessage());
@@ -51,7 +52,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ApiErrorResponse> badRequestExceptionHandler(Exception ex) {
 		logger.info("Bad Request Exception: " + ex.getMessage());
-		ApiErrorResponse error = new ApiErrorResponse();
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
         error.setMessage(ex.getMessage());
@@ -67,12 +68,28 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RequestValidationException.class)
 	public ResponseEntity<ApiErrorResponse> requestValidationExceptionHandler(Exception ex) {
 		logger.info("Bad Request Exception: " + ex.getMessage());
-		ApiErrorResponse error = new ApiErrorResponse();
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
         error.setMessage(ex.getMessage());
         return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.BAD_REQUEST);
     }
+	
+	/**
+	 * DuplicateRecordException Handler function
+	 * @param 
+	 * @return ResponseEntity
+	 * @throws 
+	 */
+	@ExceptionHandler(DuplicateRecordException.class)
+	public ResponseEntity<ApiErrorResponse> duplicateRecordExceptionHandler() {
+		logger.info("Duplicate Record Exception ");
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
+		error.setStatus(HttpStatus.CONFLICT);
+		error.setErrorCode(ApplicationConstants.DUPLICATE_RECORD_ERROR_CODE);
+        error.setMessage(ApplicationConstants.DUPLICATE_USER_ERROR_MESSAGE);
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.OK);
+	}
 	
 	/*@ExceptionHandler(BadRequestException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason = "Bad Request URL")
