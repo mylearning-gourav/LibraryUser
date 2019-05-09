@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +20,7 @@ import com.libraryuser.exception.BadRequestException;
 import com.libraryuser.exception.RequestValidationException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.validator.UpdateRequestValidator;
 
 /**
  * @author Gourav
@@ -33,6 +33,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	UpdateRequestValidator validator;
 	
 	/**
 	 * Get Users
@@ -49,7 +52,7 @@ public class UserController {
 		
 		logger.info("Get Users Controller");
 
-		ResultBean resultBean = new ResultBean();
+		ResultBean resultBean = ResultBean.getInstance();
 		HashMap<String, List> userResultMap = new HashMap<String, List>();
 		
 		/*Set user object with param values*/
@@ -95,7 +98,7 @@ public class UserController {
 		}
 		else {
 			logger.info("Add User No Error");
-			ResultBean resultBean = new ResultBean();
+			ResultBean resultBean = ResultBean.getInstance();
 			if(user.isActive() == null) {
 				user.setActive(true);
 			}
@@ -105,6 +108,29 @@ public class UserController {
 			userService.addUsers(user);
 			return resultBean;
 		}
+	}
+	
+	/**
+	 * Update Users
+	 * @param user
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value=ApplicationConstants.UPDATE_USER, method=RequestMethod.PUT)
+	public ResultBean updateUser(@ModelAttribute("user") User user, 
+			BindingResult result ) throws Exception {
+		validator.validate(user, result);
+		
+		if(result.hasErrors()) {
+			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			System.out.println("Validation Error");
+		}
+		else {
+			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		}
+		
+		ResultBean resultBean = ResultBean.getInstance();
+		return resultBean;
 	}
 	
 	/**

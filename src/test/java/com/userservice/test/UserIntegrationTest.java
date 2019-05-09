@@ -2,6 +2,7 @@ package com.userservice.test;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -176,6 +177,25 @@ public class UserIntegrationTest {
 	public void integrationTestIAddDuplicateUserError() throws Exception {
 		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(3001)))
+			.andExpect(jsonPath("$.status", is("CONFLICT")));
+	}
+	
+	/*
+	 * Test Case Exception for add duplicate user
+	 */
+	@Test
+	public void integrationTestJUpdateUserValidationError() throws Exception {
+
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("name", "Mani Babu")
 				.param("email", "mani_babu@gmail.com")
 				.param("password", "pada_padiba")

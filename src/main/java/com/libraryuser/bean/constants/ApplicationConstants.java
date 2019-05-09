@@ -5,6 +5,7 @@ public interface ApplicationConstants {
 	public static final String HEALTH_CHECK = "/userservice/healthcheck";
 	public static final String GET_USER = "/userservice/get";
 	public static final String ADD_USER = "/userservice/add";
+	public static final String UPDATE_USER = "/userservice/update";
 	
 	public static final String CONSTANT_TRUE = "true";
 	public static final String CONSTANT_FALSE = "false";

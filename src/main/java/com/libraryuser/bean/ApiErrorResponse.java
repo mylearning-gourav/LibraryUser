@@ -18,6 +18,10 @@ public class ApiErrorResponse {
     	return errorResponse;
     }
     
+    private ApiErrorResponse() {
+    	
+    }
+    
 	public HttpStatus getStatus() {
 		return status;
 	}

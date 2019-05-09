@@ -1,6 +1,5 @@
 package com.libraryuser.bean;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,15 +12,19 @@ public class ResultBean {
 	private String statusMessage;
 	private Map<String, List> result;
 	
-	public ResultBean() {
+	private ResultBean() {
 		statusCode = 2000;
 		statusMessage = "Success";
 	}
 	
-	public ResultBean(int statusCode, String statusMessage) {
-		this.statusCode = statusCode;
-		this.statusMessage = statusMessage;
-	}
+	private static ResultBean resultBean;
+    
+    public static ResultBean getInstance() {
+    	if(resultBean == null) {
+    		resultBean = new ResultBean();
+    	}
+    	return resultBean;
+    }
 	
 	/*public ResultBean(int statusCode, String statusMessage, HashMap<String, List> result) {
 		this.statusCode = statusCode;
