@@ -73,9 +73,6 @@ public class UserController {
 		}
 		if(role != null && role != 0)
 			user.setRoleId(role);
-		
-		
-		System.out.println("Params: " + id + "    " + name + "     " + email + "     " + active + "     " + role + "   ");
 
 		List<User> users = userService.getUsers(user);
 		userResultMap.put("Users", users);
@@ -122,11 +119,12 @@ public class UserController {
 		validator.validate(user, result);
 		
 		if(result.hasErrors()) {
-			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			System.out.println("Validation Error");
+			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			logger.error("Update user requests not valid");
+			throw new RequestValidationException("Update user requests not valid");
 		}
 		else {
-			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+			logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB Validation Error BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 		}
 		
 		ResultBean resultBean = ResultBean.getInstance();

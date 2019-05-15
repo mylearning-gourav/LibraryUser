@@ -7,6 +7,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -256,6 +258,138 @@ public class UserControllerUnitTest {
 			.andExpect(jsonPath("$.errorCode", is(3001)))
 			.andExpect(jsonPath("$.status", is("CONFLICT")));
 	}
+	
+	/*************************
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * /*************************
+	 */
+	/******************************************Update User Test Cases*****************************************/
+	/*
+	 * Test Case Exception for update user with id null
+	 */
+	@Test
+	public void testUpdateUserIdValidationError() throws Exception {
+		
+		/*doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));*/
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update user with name null
+	 */
+	@Test
+	public void testUpdateUserNameValidationError() throws Exception {
+		
+		/*doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));*/
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
+				.param("userId", "1")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update user with email null
+	 */
+	@Test
+	public void testUpdateUserEmailValidationError() throws Exception {
+		
+		/*doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));*/
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
+				.param("userId", "1")
+				.param("name", "Mani Babu")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case success for update user 
+	 */
+	@Test
+	public void testUpdateUserValidationSuccess() throws Exception {
+		
+		/*doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));*/
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
+				.param("userId", "1")
+				.param("name", "Mani Babu")
+				.param("email", "mani_babu@gmail.com")
+				.param("password", "pada_padiba")
+				.param("active", "1")
+				.param("roleId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*************************
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * /*************************
 	
 	/******************************************Get User Test Cases*****************************************/
 	/*

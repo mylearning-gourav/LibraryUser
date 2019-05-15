@@ -16,8 +16,16 @@ public class UpdateRequestValidator implements Validator {
 	}
 
 	@Override
-	public void validate(Object target, Errors error) {
+	public void validate(Object object, Errors error) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(error, "userId", "error.userId", "userId is requird");
+		
+		User user = (User) object;
+		
+		if(user.getUserId() <= 0)
+			error.rejectValue("userId", "negativeValue", new Object[]{"'userId'"}, "userId can't be negative or zero");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(error, "name", "error.name", "name is requird");
+		ValidationUtils.rejectIfEmptyOrWhitespace(error, "email", "error.email", "email is requird");
 	}
 
 }
