@@ -24,6 +24,9 @@ public class UpdateRequestValidator implements Validator {
 		if(user.getUserId() <= 0)
 			error.rejectValue("userId", "negativeValue", new Object[]{"'userId'"}, "userId can't be negative or zero");
 		
+		if(user.getRoleId() <= 0)
+			error.rejectValue("roleId", "negativeValue", new Object[]{"'roleId'"}, "roleId can't be negative or zero");
+		
 		ValidationUtils.rejectIfEmptyOrWhitespace(error, "name", "error.name", "name is requird");
 		ValidationUtils.rejectIfEmptyOrWhitespace(error, "email", "error.email", "email is requird");
 	}

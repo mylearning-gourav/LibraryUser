@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.dao.UserDao;
 import com.libraryuser.exception.DuplicateRecordException;
+import com.libraryuser.exception.UserNotFoundException;
 import com.libraryuser.model.User;
 
 /**
@@ -66,6 +66,25 @@ public class UserServiceImpl implements UserService {
 	public boolean checkDupicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User Service");
 		return userDao.checkDupicateUser(email);
+	}
+
+	/**
+	 * Update Users Service
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updateUser(User user) throws Exception {
+		logger.info("Update User Service");
+		if(userDao.getUsers(user).size() == 1) {
+			userDao.updateUser(user);
+		}
+		else {
+			logger.error("User Not Found");
+			throw new UserNotFoundException();
+		}
+		
 	}
 
 }

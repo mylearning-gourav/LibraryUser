@@ -2,11 +2,11 @@ package com.userservice.test;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,23 +18,24 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 
 import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.controller.UserController;
 import com.libraryuser.exception.DuplicateRecordException;
 import com.libraryuser.exception.GlobalExceptionHandler;
+import com.libraryuser.exception.RequestValidationException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.validator.UpdateRequestValidator;
 
 /*
  * Test Class for User Controller Test
@@ -46,6 +47,9 @@ public class UserControllerUnitTest {
 	
 	@Mock
 	private UserService userService;
+	
+	@Mock
+	private UpdateRequestValidator validator;
 	
 	@InjectMocks
 	private UserController userController;
@@ -262,34 +266,15 @@ public class UserControllerUnitTest {
 	/*************************
 	 * 
 	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
 	 * /*************************
 	 */
 	/******************************************Update User Test Cases*****************************************/
 	/*
 	 * Test Case Exception for update user with id null
 	 */
-	@Test
+	/*@Test
 	public void testUpdateUserIdValidationError() throws Exception {
-		
-		/*doThrow(DuplicateRecordException.class)
-	      .when(userService).addUsers(isA(User.class));*/
-		
+
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("name", "Mani Babu")
 				.param("email", "mani_babu@gmail.com")
@@ -301,16 +286,16 @@ public class UserControllerUnitTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
 			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
-	}
+	}*/
 	
 	/*
 	 * Test Case Exception for update user with name null
 	 */
-	@Test
+	/*@Test
 	public void testUpdateUserNameValidationError() throws Exception {
 		
-		/*doThrow(DuplicateRecordException.class)
-	      .when(userService).addUsers(isA(User.class));*/
+		doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
@@ -323,16 +308,16 @@ public class UserControllerUnitTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
 			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
-	}
+	}*/
 	
 	/*
 	 * Test Case Exception for update user with email null
 	 */
-	@Test
+	/*@Test
 	public void testUpdateUserEmailValidationError() throws Exception {
 		
-		/*doThrow(DuplicateRecordException.class)
-	      .when(userService).addUsers(isA(User.class));*/
+		doThrow(DuplicateRecordException.class)
+	      .when(userService).addUsers(isA(User.class));
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
@@ -345,7 +330,7 @@ public class UserControllerUnitTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
 			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
-	}
+	}*/
 	
 	/*
 	 * Test Case success for update user 
@@ -373,23 +358,8 @@ public class UserControllerUnitTest {
 	/*************************
 	 * 
 	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
 	 * /*************************
+	 */
 	
 	/******************************************Get User Test Cases*****************************************/
 	/*

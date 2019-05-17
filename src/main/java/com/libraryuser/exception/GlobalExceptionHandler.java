@@ -91,6 +91,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.OK);
 	}
 	
+	/**
+	 * UserNotFoundException Handler function
+	 * @param 
+	 * @return ResponseEntity
+	 * @throws 
+	 */
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiErrorResponse> userNotFoundExceptionHandler(Exception ex) {
+		logger.info("User Not Found Exception ");
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
+		error.setStatus(HttpStatus.BAD_REQUEST);
+		error.setErrorCode(ApplicationConstants.USER_NOT_FOUND_ERROR_CODE);
+        error.setMessage(ApplicationConstants.USER_NOT_FOUND_ERROR_MESSAGE);
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.OK);
+	}
+	
 	/*@ExceptionHandler(BadRequestException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason = "Bad Request URL")
 	public @ResponseBody ResultBean handleBadRequestException() {

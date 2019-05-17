@@ -119,17 +119,26 @@ public class UserController {
 		validator.validate(user, result);
 		
 		if(result.hasErrors()) {
-			logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Validation Error AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			logger.error("Update user requests not valid");
 			throw new RequestValidationException("Update user requests not valid");
 		}
 		else {
-			logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB Validation Error BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+			logger.info("Valid Request");
 		}
 		
 		ResultBean resultBean = ResultBean.getInstance();
 		return resultBean;
 	}
+	
+	
+	/***************************************************************************************************/
+	@RequestMapping(value="/nana/nani", method=RequestMethod.PUT)
+	public ResultBean updateUser1(@ModelAttribute("user") User user) throws Exception {
+			throw new RequestValidationException("Update user requests not valid");
+	}
+	/***************************************************************************************************/
+	
+	
 	
 	/**
 	 * Health Check Service

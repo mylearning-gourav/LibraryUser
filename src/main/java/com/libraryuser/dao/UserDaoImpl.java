@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.libraryuser.bean.constants.SqlQueryConstants;
 import com.libraryuser.mapper.UserMapper;
 import com.libraryuser.model.User;
 import org.springframework.jdbc.core.PreparedStatementCallback;  
@@ -43,7 +44,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		
 		logger.info("Get Users Dao");
 		
-		String selectUserStatement = "SELECT id, name, email, active, role_id FROM user WHERE 1 = 1";
+		String selectUserStatement = SqlQueryConstants.GET_USER_STATEMENT;
 		
 		final Map<String, Object> paramMap = new LinkedHashMap<String, Object>();
 		if(user.getName() != null && !user.getName().isEmpty()) {
@@ -119,9 +120,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User DAO");
-		System.out.println("DAO*******************************************************************");
 		
-		String insertStatement = "INSERT INTO user(name,email,password,active,role_id)values(?,?,?,?,?)";
+		String insertStatement = SqlQueryConstants.INSERT_USER_STATEMENT;
 		
 		jdbcTemplate.execute(insertStatement, new PreparedStatementCallback<Boolean>() {
 			@Override  
@@ -136,7 +136,32 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		        return ps.execute();  
 		    }  
 		});
+	}
+
+	/**
+	 * Update Users Service
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updateUser(User user) throws Exception {
+		logger.info("Update User DAO");
 		
+		String updateStatement = SqlQueryConstants.UPDATE_USER_STATEMENT;
+		
+		jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
+			
+			public Boolean doInPreparedStatement(PreparedStatement ps) 
+					throws SQLException, DataAccessException {
+				ps.setString(1, user.getName());
+				ps.setString(2, user.getEmail());
+				ps.setInt(3, user.getRoleId());
+				ps.setBoolean(4, user.isActive());
+				ps.setInt(5, user.getUserId());
+				return ps.execute();
+			}
+		});
 	}
 
 	/**
@@ -148,7 +173,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	@Override
 	public boolean checkDupicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User DAO");
-		String selectStatement = "SELECT count(*) totalCount FROM user WHERE email=?";
+		String selectStatement = SqlQueryConstants.SELECT_DUPLICATE_USER_STATEMENT;
 		
 		int count = jdbcTemplate.queryForObject(selectStatement, new Object[] { email }, Integer.class);
 		
