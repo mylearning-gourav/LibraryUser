@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(RequestValidationException.class)
 	public ResponseEntity<ApiErrorResponse> requestValidationExceptionHandler(Exception ex) {
-		logger.info("Bad Request Exception: " + ex.getMessage());
+		logger.info("Request Validation Exception: " + ex.getMessage());
 		ApiErrorResponse error = ApiErrorResponse.getInstance();
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setErrorCode(HttpStatus.BAD_REQUEST.value());

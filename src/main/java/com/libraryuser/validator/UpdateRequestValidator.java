@@ -7,6 +7,8 @@ import org.springframework.validation.Validator;
 
 import com.libraryuser.model.User;
 
+import ch.qos.logback.classic.Logger;
+
 @Component
 public class UpdateRequestValidator implements Validator {
 

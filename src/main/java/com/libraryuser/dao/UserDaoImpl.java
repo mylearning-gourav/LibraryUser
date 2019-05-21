@@ -1,7 +1,11 @@
 package com.libraryuser.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +16,22 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.libraryuser.bean.constants.SqlQueryConstants;
 import com.libraryuser.mapper.UserMapper;
 import com.libraryuser.model.User;
-import org.springframework.jdbc.core.PreparedStatementCallback;  
+import com.libraryuser.util.CommonUtil;  
 
 @Repository("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
@@ -27,6 +39,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	private static final Logger logger = Logger.getLogger(UserDaoImpl.class);
 	
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private DataSourceTransactionManager transactionManager;
 	
 	@Autowired
 	public UserDaoImpl(DataSource dataSource) {
@@ -120,22 +135,17 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User DAO");
+		TransactionDefinition txDef = new DefaultTransactionDefinition();
 		
-		String insertStatement = SqlQueryConstants.INSERT_USER_STATEMENT;
-		
-		jdbcTemplate.execute(insertStatement, new PreparedStatementCallback<Boolean>() {
-			@Override  
-			public Boolean doInPreparedStatement(PreparedStatement ps)  
-		            throws SQLException, DataAccessException {  
-		              
-		        ps.setString(1, user.getName());  
-		        ps.setString(2, user.getEmail());
-		        ps.setString(3, user.getPassword());
-		        ps.setBoolean(4, user.isActive());
-		        ps.setInt(5, user.getRoleId());
-		        return ps.execute();  
-		    }  
-		});
+		TransactionStatus txStatus = transactionManager.getTransaction(txDef);
+        try {
+        	int id = this.insertUser(user);
+    		this.insertPassword(id, user.getPassword());
+            transactionManager.commit(txStatus);
+        } catch (Exception e) {
+            transactionManager.rollback(txStatus);
+            throw e;
+        }
 	}
 
 	/**
@@ -158,7 +168,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 				ps.setString(2, user.getEmail());
 				ps.setInt(3, user.getRoleId());
 				ps.setBoolean(4, user.isActive());
-				ps.setInt(5, user.getUserId());
+				ps.setTimestamp(5, CommonUtil.getCurrentTimestamp());
+				ps.setInt(6, user.getUserId());
 				return ps.execute();
 			}
 		});
@@ -181,6 +192,81 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Insert Users Table
+	 * @param user
+	 * @return int
+	 * @throws Exception
+	 */
+	private Integer insertUser(User user) throws Exception {
+		logger.info("Insert User DAO");
+		String insertStatement = SqlQueryConstants.INSERT_USER_STATEMENT;
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+		    new PreparedStatementCreator() {
+		    	@Override
+		        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+		            PreparedStatement ps =
+		                connection.prepareStatement(insertStatement, new String[] {"id"});
+		            ps.setString(1, user.getName());  
+			        ps.setString(2, user.getEmail());
+			        ps.setBoolean(3, user.isActive());
+			        ps.setInt(4, user.getRoleId());
+			        ps.setTimestamp(5, CommonUtil.getCurrentTimestamp());
+		            return ps;
+		        }
+		    },
+		    keyHolder);
+		
+		return keyHolder.getKey().intValue();
+	}
+	
+	/**
+	 * Insert Password Table
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	private void insertPassword(int id, String password) {
+		logger.info("Insert Password DAO");
+		String insertStatement = SqlQueryConstants.INSERT_PASSWORD_STATEMENT;
+		
+		jdbcTemplate.execute(insertStatement, new PreparedStatementCallback<Boolean>() {
+			@Override  
+			public Boolean doInPreparedStatement(PreparedStatement ps)  
+		            throws SQLException, DataAccessException {  
+		              
+		        ps.setInt(1, id);  
+		        ps.setString(2, password);
+		        return ps.execute();  
+		    }  
+		});
+	}
+	
+	/**
+	 * Deactivate Old Password
+	 * @param id
+	 * @return 
+	 * @throws Exception
+	 */
+	private void deactivatePassword(int id) {
+		logger.info("Deactivate Password DAO");
+		String updateStatement = SqlQueryConstants.DEACTIVATE_PASSWORD_STATEMENT;
+		
+		jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
+			@Override  
+			public Boolean doInPreparedStatement(PreparedStatement ps)  
+		            throws SQLException, DataAccessException {  
+		              
+		        ps.setBoolean(1, false);
+		        ps.setInt(2, id);
+		        ps.setBoolean(3, true);
+		        return ps.execute();  
+		    }  
+		});
 	}
 
 }

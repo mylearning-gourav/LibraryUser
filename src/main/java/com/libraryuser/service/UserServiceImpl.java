@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User Service");
-		System.out.println("Service*******************************************************************");
 		if(this.checkDupicateUser(user.getEmail())) {
 			logger.info("Duplicate User");
 			throw new DuplicateRecordException();
@@ -54,6 +53,27 @@ public class UserServiceImpl implements UserService {
 			userDao.addUsers(user);
 			logger.info("User Added");
 		}
+	}
+
+	/**
+	 * Update Users Service
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updateUser(User user) throws Exception {
+		logger.info("Update User Service");
+		User inUser = new User();
+		inUser.setUserId(user.getUserId());
+		if(userDao.getUsers(inUser).size() == 1) {
+			userDao.updateUser(user);
+		}
+		else {
+			logger.error("User Not Found");
+			throw new UserNotFoundException();
+		}
+		
 	}
 
 	/**
@@ -66,25 +86,6 @@ public class UserServiceImpl implements UserService {
 	public boolean checkDupicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User Service");
 		return userDao.checkDupicateUser(email);
-	}
-
-	/**
-	 * Update Users Service
-	 * @param user
-	 * @return 
-	 * @throws Exception
-	 */
-	@Override
-	public void updateUser(User user) throws Exception {
-		logger.info("Update User Service");
-		if(userDao.getUsers(user).size() == 1) {
-			userDao.updateUser(user);
-		}
-		else {
-			logger.error("User Not Found");
-			throw new UserNotFoundException();
-		}
-		
 	}
 
 }

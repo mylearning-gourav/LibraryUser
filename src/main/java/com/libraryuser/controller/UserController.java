@@ -124,6 +124,7 @@ public class UserController {
 		}
 		else {
 			logger.info("Valid Request");
+			userService.updateUser(user);
 		}
 		
 		ResultBean resultBean = ResultBean.getInstance();

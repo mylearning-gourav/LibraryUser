@@ -277,8 +277,8 @@ public class UserIntegrationTest {
 	@Test
 	public void integrationTestNUpdateUserNotFoundError() throws Exception {
 		
-		mockMvc.perform(post(ApplicationConstants.UPDATE_USER)
-				.param("userId", "12")
+		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
+				.param("userId", "10")
 				.param("name", "Mani Babu")
 				.param("email", "mani_babu@gmail.com")
 				.param("password", "pada_padiba")
@@ -287,7 +287,7 @@ public class UserIntegrationTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
-			.andExpect(jsonPath("$.errorCode", is(3001)))
+			.andExpect(jsonPath("$.errorCode", is(3002)))
 			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
 	}
 	
@@ -295,20 +295,20 @@ public class UserIntegrationTest {
 	 * Test Case Exception for add duplicate user
 	 */
 	@Test
-	public void integrationTestNUpdateUser() throws Exception {
+	public void integrationTestOUpdateUser() throws Exception {
 
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
-				.param("userId", "1")
-				.param("name", "Mani Babu")
-				.param("email", "mani_babu@gmail.com")
+				.param("userId", "21")
+				.param("name", "Mani Babu1")
+				.param("email", "mani_babu1@gmail.com")
 				.param("password", "pada_padiba")
 				.param("active", "1")
 				.param("roleId", "1"))
 			.andDo(print())
-			.andExpect(status().isOk());
-			/*.andExpect(content().contentType("application/json;charset=UTF-8"))
-			.andExpect(jsonPath("$.errorCode", is(3001)))
-			.andExpect(jsonPath("$.status", is("CONFLICT")));*/
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
 	}
 
 }
