@@ -292,7 +292,7 @@ public class UserIntegrationTest {
 	}
 	
 	/*
-	 * Test Case Exception for add duplicate user
+	 * Test Case Success for update user
 	 */
 	@Test
 	public void integrationTestOUpdateUser() throws Exception {
@@ -311,4 +311,82 @@ public class UserIntegrationTest {
 			.andExpect(jsonPath("$.statusMessage", is("Success")));
 	}
 
+	/******************************************Update Password Test Cases*****************************************/
+	/*
+	 * Test Case Exception for update password with password null
+	 */
+	@Test
+	public void integrationTestPUpdatePasswordValidationError() throws Exception {
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
+				.param("userId", "1"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update password with user id null
+	 */
+	@Test
+	public void integrationTestQUpdatePasswordUserIdValidationError() throws Exception {
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
+				.param("password", "pada_padiba"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update password with user id negative or 0
+	 */
+	@Test
+	public void integrationTestRUpdatePasswordUserIdZeroValidationError() throws Exception {
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
+				.param("userId", "0")
+				.param("password", "pada_padiba"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update password with wrong user id null
+	 */
+	@Test
+	public void integrationTestSUpdatePasswordUserNotFoundError() throws Exception {
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
+				.param("userId", "12")
+				.param("password", "pada_padiba"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(3002)))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Success for update password
+	 */
+	@Test
+	public void integrationTestTUpdatePasswordSuccess() throws Exception {
+
+		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
+				.param("userId", "21")
+				.param("password", "pada_padiba1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
 }

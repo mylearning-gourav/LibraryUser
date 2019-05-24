@@ -20,6 +20,7 @@ import com.libraryuser.exception.BadRequestException;
 import com.libraryuser.exception.RequestValidationException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.validator.UpdatePasswordValidator;
 import com.libraryuser.validator.UpdateRequestValidator;
 
 /**
@@ -35,7 +36,10 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
-	UpdateRequestValidator validator;
+	UpdateRequestValidator updateUserValidator;
+	
+	@Autowired
+	UpdatePasswordValidator updatePasswordValidator;
 	
 	/**
 	 * Get Users
@@ -116,7 +120,8 @@ public class UserController {
 	@RequestMapping(value=ApplicationConstants.UPDATE_USER, method=RequestMethod.PUT)
 	public ResultBean updateUser(@ModelAttribute("user") User user, 
 			BindingResult result ) throws Exception {
-		validator.validate(user, result);
+		logger.info("Update User Controller");
+		updateUserValidator.validate(user, result);
 		
 		if(result.hasErrors()) {
 			logger.error("Update user requests not valid");
@@ -125,6 +130,31 @@ public class UserController {
 		else {
 			logger.info("Valid Request");
 			userService.updateUser(user);
+		}
+		
+		ResultBean resultBean = ResultBean.getInstance();
+		return resultBean;
+	}
+	
+	/**
+	 * Update Password
+	 * @param user
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value=ApplicationConstants.UPDATE_PASSWORD, method=RequestMethod.PUT)
+	public ResultBean updatePassword(@ModelAttribute("user") User user, 
+			BindingResult result) throws Exception {
+		logger.info("Update Password Controller");
+		updatePasswordValidator.validate(user, result);
+		
+		if(result.hasErrors()) {
+			logger.error("Update password request not valid");
+			throw new RequestValidationException("Update password request not valid");
+		}
+		else {
+			logger.info("Valid Update Password Request");
+			userService.updatePassword(user);
 		}
 		
 		ResultBean resultBean = ResultBean.getInstance();

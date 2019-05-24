@@ -88,4 +88,24 @@ public class UserServiceImpl implements UserService {
 		return userDao.checkDupicateUser(email);
 	}
 
+	/**
+	 * Update Users Password
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updatePassword(User user) throws Exception {
+		logger.info("Update Password Service");
+		User inUser = new User();
+		inUser.setUserId(user.getUserId());
+		if(userDao.getUsers(inUser).size() == 1) {
+			userDao.updatePassword(user);
+		}
+		else {
+			logger.error("User Not Found");
+			throw new UserNotFoundException();
+		}
+	}
+
 }

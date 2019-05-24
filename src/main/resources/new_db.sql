@@ -39,5 +39,8 @@ CHANGE COLUMN `add_timestamp` `add_timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIM
 ALTER TABLE `library_users`.`user` 
 DROP COLUMN `add_timestamp`;
 
+ALTER TABLE `library_users`.`password` 
+CHANGE COLUMN `time_stamp` `time_stamp` TIMESTAMP NULL ;
+
 INSERT INTO `library_users`.`roles` (`id`, `role`) VALUES ('1', 'User');
 INSERT INTO `library_users`.`roles` (`id`, `role`) VALUES ('2', 'Admin');

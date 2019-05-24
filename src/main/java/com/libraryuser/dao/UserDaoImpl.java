@@ -225,6 +225,52 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	}
 	
 	/**
+	 * Update Password Table
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updatePassword(User user) throws Exception {
+		logger.info("Update Password DAO");
+		TransactionDefinition txDef = new DefaultTransactionDefinition();
+		
+		TransactionStatus txStatus = transactionManager.getTransaction(txDef);
+        try {
+    		this.deactivateOldPassword(user.getUserId());
+    		this.insertPassword(user.getUserId(), user.getPassword());
+            transactionManager.commit(txStatus);
+        } catch (Exception e) {
+            transactionManager.rollback(txStatus);
+            throw e;
+        }
+		
+	}
+	
+	/**
+	 * Deactivate Old Password
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	private void deactivateOldPassword(int id) {
+		logger.info("Deactivate Old Password DAO");
+		String updateStatement = SqlQueryConstants.DEACTIVATE_OLD_PASSWORD_STATEMENT;
+		
+		jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
+			@Override  
+			public Boolean doInPreparedStatement(PreparedStatement ps)  
+		            throws SQLException, DataAccessException {  
+		              
+		        ps.setBoolean(1, false); 
+		        ps.setInt(2, id);
+		        ps.setBoolean(3, true);
+		        return ps.execute();  
+		    }  
+		});
+	}
+	
+	/**
 	 * Insert Password Table
 	 * @param user
 	 * @return 
@@ -241,6 +287,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		              
 		        ps.setInt(1, id);  
 		        ps.setString(2, password);
+		        ps.setTimestamp(3, CommonUtil.getCurrentTimestamp());
 		        return ps.execute();  
 		    }  
 		});
@@ -268,5 +315,4 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		    }  
 		});
 	}
-
 }

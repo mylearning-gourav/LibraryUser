@@ -17,6 +17,8 @@ public interface UserService {
 	public boolean checkDupicateUser(String email) throws Exception;
 	
 	public void updateUser(User user) throws Exception;
+	
+	public void updatePassword(User user) throws Exception;
 
 	/*public void registerNewUser(User user) throws Exception;
 
