@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 
 import org.junit.Assert;
@@ -20,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,9 +32,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.config.AppConfiguration;
 import com.libraryuser.controller.UserController;
+import com.libraryuser.model.User;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -359,7 +366,7 @@ public class UserIntegrationTest {
 	}
 	
 	/*
-	 * Test Case Exception for update password with wrong user id null
+	 * Test Case Exception for update password with wrong user id
 	 */
 	@Test
 	public void integrationTestSUpdatePasswordUserNotFoundError() throws Exception {
@@ -388,5 +395,112 @@ public class UserIntegrationTest {
 			.andExpect(content().contentType("application/json;charset=UTF-8"))
 			.andExpect(jsonPath("$.statusCode", is(2000)))
 			.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/******************************************Update Active Status Test Cases*****************************************/
+	/*
+	 * Test Case Exception for update active status with user[] null
+	 */
+	@Test
+	public void integrationTestUUpdateActiveValidationError() throws Exception {
+		
+		List<User> users = new ArrayList<User>();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String requestString = objectMapper.writeValueAsString(users);
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_ACTIVE_STATUS)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(requestString))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+				.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+
+	/*
+	 * Test Case Exception for update active status with invalid user id
+	 */
+	@Test
+	public void integrationTestVUpdateActiveValidationError() throws Exception {
+		User user1 = new User(0, null, null, false, 0);
+		User user2 = new User(3, null, null, false, 0);
+		
+		List<User> users = new ArrayList<User>();
+		
+		users.add(user1);
+		users.add(user2);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String requestString = objectMapper.writeValueAsString(users);
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_ACTIVE_STATUS)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(requestString))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+				.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case Exception for update active status with wrong user id
+	 */
+	@Test
+	public void integrationTestWUpdateActiveWrongUserError() throws Exception {
+		User user1 = new User(3, null, null, false, 0);
+		User user2 = new User(91, null, null, false, 0);
+		
+		List<User> users = new ArrayList<User>();
+		
+		users.add(user1);
+		users.add(user2);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		String requestString = objectMapper.writeValueAsString(users);
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_ACTIVE_STATUS)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(requestString))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(jsonPath("$.errorCode", is(ApplicationConstants.USER_NOT_FOUND_ERROR_CODE)))
+				.andExpect(jsonPath("$.status", is("BAD_REQUEST")))
+				.andExpect(jsonPath("$.message", is(ApplicationConstants.USER_NOT_FOUND_ERROR_MESSAGE)));
+	}
+	
+	/*
+	 * Test Case Exception for update active status with invalid user id
+	 */
+	@Test
+	public void integrationTestXUpdateActiveValidationSuccess() throws Exception {
+		User user1 = new User(1, null, null, false, 0);
+		User user2 = new User(3, null, null, false, 0);
+		
+		List<User> users = new ArrayList<User>();
+		
+		users.add(user1);
+		users.add(user2);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+//		String requestString = new Gson().toJson(users);
+		
+		String requestString = objectMapper.writeValueAsString(users);
+		
+		mockMvc.perform(put(ApplicationConstants.UPDATE_ACTIVE_STATUS)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(requestString))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(jsonPath("$.statusCode", is(2000)))
+				.andExpect(jsonPath("$.statusMessage", is("Success")));
 	}
 }

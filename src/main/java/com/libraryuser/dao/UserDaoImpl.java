@@ -3,9 +3,6 @@ package com.libraryuser.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +26,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.libraryuser.bean.constants.SqlQueryConstants;
+import com.libraryuser.exception.UserNotFoundException;
 import com.libraryuser.mapper.UserMapper;
 import com.libraryuser.model.User;
 import com.libraryuser.util.CommonUtil;  
@@ -248,6 +246,57 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	}
 	
 	/**
+	 * Update Active Status
+	 * @param users[]
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updateActiveStatus(List<User> userList) throws Exception {
+		logger.info("Update Active Status DAO");
+		
+		TransactionDefinition txDef = new DefaultTransactionDefinition();
+		TransactionStatus txStatus = transactionManager.getTransaction(txDef);
+
+		String updateStatement = SqlQueryConstants.UPDATE_ACTIVE_STATUS_STATEMENT;
+		try {
+			for(User user : userList) {
+				if(!this.checkUserId(user.getUserId())) {
+					throw new UserNotFoundException();
+				}
+				jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
+					@Override  
+					public Boolean doInPreparedStatement(PreparedStatement ps)  
+				            throws SQLException, DataAccessException {  
+				              
+				        ps.setBoolean(1, user.isActive());
+				        ps.setInt(2, user.getUserId());
+				        return ps.execute();
+				    }
+				});
+			}
+			transactionManager.commit(txStatus);
+		} 
+		catch(UserNotFoundException ex) {
+			transactionManager.rollback(txStatus);
+			throw ex;
+		}
+		catch (Exception e) {
+			transactionManager.rollback(txStatus);
+            throw e;
+		}
+	}
+	
+	private boolean checkUserId(int id) throws Exception {
+		User userCheck = new User();
+		userCheck.setUserId(id);
+		if(this.getUsers(userCheck).size() == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Deactivate Old Password
 	 * @param user
 	 * @return 
@@ -299,7 +348,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	private void deactivatePassword(int id) {
+	/*private void deactivatePassword(int id) {
 		logger.info("Deactivate Password DAO");
 		String updateStatement = SqlQueryConstants.DEACTIVATE_PASSWORD_STATEMENT;
 		
@@ -314,5 +363,5 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		        return ps.execute();  
 		    }  
 		});
-	}
+	}*/
 }

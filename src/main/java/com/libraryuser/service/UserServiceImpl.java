@@ -108,4 +108,16 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * Update Users Active
+	 * @param users[]
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void updateActiveStatus(List<User> userList) throws Exception {
+		logger.info("Update Active Status Service");
+		userDao.updateActiveStatus(userList);
+	}
+
 }

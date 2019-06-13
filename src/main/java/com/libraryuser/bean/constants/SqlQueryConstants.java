@@ -13,5 +13,6 @@ public interface SqlQueryConstants {
 	public static final String UPDATE_USER_STATEMENT = "UPDATE user SET name = ?, email = ?, role_id = ?, active = ?, "
 			+ "update_timestamp = ? WHERE id = ?";
 	public static final String SELECT_DUPLICATE_USER_STATEMENT = "SELECT count(*) totalCount FROM user WHERE email = ?";
+	public static final String UPDATE_ACTIVE_STATUS_STATEMENT = "UPDATE user SET active = ? WHERE id = ?";
 
 }

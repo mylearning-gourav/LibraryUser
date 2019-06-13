@@ -7,6 +7,7 @@ public interface ApplicationConstants {
 	public static final String ADD_USER = "/userservice/add";
 	public static final String UPDATE_USER = "/userservice/update";
 	public static final String UPDATE_PASSWORD = "/userservice/updatepassword";
+	public static final String UPDATE_ACTIVE_STATUS = "/userservice/updatestatus";
 	
 	public static final String CONSTANT_TRUE = "true";
 	public static final String CONSTANT_FALSE = "false";

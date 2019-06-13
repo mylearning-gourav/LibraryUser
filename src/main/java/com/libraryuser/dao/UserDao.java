@@ -16,6 +16,8 @@ public interface UserDao {
 	public void updatePassword(User user) throws Exception;
 	
 	public boolean checkDupicateUser(String email) throws Exception;
+	
+	public void updateActiveStatus(List<User> userList) throws Exception;
 
 	/*public void registerNewUser(User user) throws Exception;
 

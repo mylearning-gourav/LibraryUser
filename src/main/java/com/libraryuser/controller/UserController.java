@@ -1,5 +1,6 @@
 package com.libraryuser.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +23,7 @@ import com.libraryuser.exception.BadRequestException;
 import com.libraryuser.exception.RequestValidationException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.validator.UpdateActiveValidator;
 import com.libraryuser.validator.UpdatePasswordValidator;
 import com.libraryuser.validator.UpdateRequestValidator;
 
@@ -40,6 +44,9 @@ public class UserController {
 	
 	@Autowired
 	UpdatePasswordValidator updatePasswordValidator;
+	
+	@Autowired
+	UpdateActiveValidator updateActiveValidator;
 	
 	/**
 	 * Get Users
@@ -157,6 +164,37 @@ public class UserController {
 			userService.updatePassword(user);
 		}
 		
+		ResultBean resultBean = ResultBean.getInstance();
+		return resultBean;
+	}
+	
+	/**
+	 * Update Active Users
+	 * @param users[]
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value=ApplicationConstants.UPDATE_ACTIVE_STATUS, method=RequestMethod.PUT)
+//	public ResultBean updateActiveStatus(@RequestBody ArrayList<User> userList, BindingResult result) throws Exception {
+	public ResultBean updateActiveStatus(@RequestBody ArrayList<User> userList) throws Exception {
+		logger.info("Update Active Status Controller");
+		if(userList.isEmpty()) {
+			throw new BadRequestException("Request Param is empty");
+		}
+
+		for(User user : userList) {
+			DataBinder binder = new DataBinder(user);
+			binder.setValidator(updateActiveValidator);
+			binder.validate();
+			BindingResult result = binder.getBindingResult();
+			System.out.println("User Id:!!!!!!!!!!!!!!!!!!!!!!!!!" + user.getUserId());
+			
+			if(result.hasErrors()) {
+				logger.error("Update active request not valid");
+				throw new RequestValidationException("Update active request not valid");
+			}
+		}
+		userService.updateActiveStatus(userList);
 		ResultBean resultBean = ResultBean.getInstance();
 		return resultBean;
 	}
