@@ -490,8 +490,6 @@ public class UserIntegrationTest {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-//		String requestString = new Gson().toJson(users);
-		
 		String requestString = objectMapper.writeValueAsString(users);
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_ACTIVE_STATUS)
