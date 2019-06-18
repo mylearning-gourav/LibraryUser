@@ -13,6 +13,7 @@ import com.libraryuser.dao.UserDao;
 import com.libraryuser.exception.DuplicateRecordException;
 import com.libraryuser.exception.UserNotFoundException;
 import com.libraryuser.model.User;
+import com.libraryuser.util.CommonUtil;
 
 /**
  * @author User
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
 			throw new DuplicateRecordException();
 		}
 		else {
+			user.setPassword(CommonUtil.getEncryptPassword(user.getPassword()));
 			userDao.addUsers(user);
 			logger.info("User Added");
 		}
@@ -100,6 +102,7 @@ public class UserServiceImpl implements UserService {
 		User inUser = new User();
 		inUser.setUserId(user.getUserId());
 		if(userDao.getUsers(inUser).size() == 1) {
+			user.setPassword(CommonUtil.getEncryptPassword(user.getPassword()));
 			userDao.updatePassword(user);
 		}
 		else {
@@ -118,6 +121,18 @@ public class UserServiceImpl implements UserService {
 	public void updateActiveStatus(List<User> userList) throws Exception {
 		logger.info("Update Active Status Service");
 		userDao.updateActiveStatus(userList);
+	}
+
+	/**
+	 * Login User
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void loginUser(User user) throws Exception {
+		logger.info("Login User Service");
+		
 	}
 
 }

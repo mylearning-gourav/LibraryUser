@@ -23,6 +23,7 @@ import com.libraryuser.exception.BadRequestException;
 import com.libraryuser.exception.RequestValidationException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
+import com.libraryuser.validator.LoginUserValidator;
 import com.libraryuser.validator.UpdateActiveValidator;
 import com.libraryuser.validator.UpdatePasswordValidator;
 import com.libraryuser.validator.UpdateRequestValidator;
@@ -47,6 +48,9 @@ public class UserController {
 	
 	@Autowired
 	UpdateActiveValidator updateActiveValidator;
+	
+	@Autowired
+	LoginUserValidator loginUserValidator;
 	
 	/**
 	 * Get Users
@@ -175,7 +179,6 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value=ApplicationConstants.UPDATE_ACTIVE_STATUS, method=RequestMethod.PUT)
-//	public ResultBean updateActiveStatus(@RequestBody ArrayList<User> userList, BindingResult result) throws Exception {
 	public ResultBean updateActiveStatus(@RequestBody ArrayList<User> userList) throws Exception {
 		logger.info("Update Active Status Controller");
 		if(userList.isEmpty()) {
@@ -199,6 +202,29 @@ public class UserController {
 		return resultBean;
 	}
 	
+	/**
+	 * Login User
+	 * @param user
+	 * @return ResultBean
+	 * @throws Exception
+	 */
+	@RequestMapping(value=ApplicationConstants.USER_LOGIN, method=RequestMethod.POST)
+	public ResultBean loginUser(@ModelAttribute("user") User user, BindingResult result) throws Exception {
+		logger.info("Login User Controller");
+		loginUserValidator.validate(user, result);
+		
+		if(result.hasErrors()) {
+			logger.error("Email or Password is blank");
+			throw new RequestValidationException("Email or Password is blank");
+		}
+		else {
+			logger.info("User Login Request");
+//			userService.updatePassword(user);
+		}
+		
+		ResultBean resultBean = ResultBean.getInstance();
+		return resultBean;
+	}
 	
 	/***************************************************************************************************/
 	@RequestMapping(value="/nana/nani", method=RequestMethod.PUT)

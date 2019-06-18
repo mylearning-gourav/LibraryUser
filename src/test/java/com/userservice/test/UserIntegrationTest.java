@@ -476,7 +476,7 @@ public class UserIntegrationTest {
 	}
 	
 	/*
-	 * Test Case Exception for update active status with invalid user id
+	 * Test Case success for update active status
 	 */
 	@Test
 	public void integrationTestXUpdateActiveValidationSuccess() throws Exception {

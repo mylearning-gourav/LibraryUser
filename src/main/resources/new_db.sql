@@ -44,3 +44,6 @@ CHANGE COLUMN `time_stamp` `time_stamp` TIMESTAMP NULL ;
 
 INSERT INTO `library_users`.`roles` (`id`, `role`) VALUES ('1', 'User');
 INSERT INTO `library_users`.`roles` (`id`, `role`) VALUES ('2', 'Admin');
+
+ALTER TABLE `library_users`.`password` 
+CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ;

@@ -341,6 +341,18 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		    }  
 		});
 	}
+
+	/**
+	 * Login User
+	 * @param user
+	 * @return 
+	 * @throws Exception
+	 */
+	@Override
+	public void loginUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	/**
 	 * Deactivate Old Password

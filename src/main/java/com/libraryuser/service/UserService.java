@@ -21,6 +21,8 @@ public interface UserService {
 	public void updatePassword(User user) throws Exception;
 
 	public void updateActiveStatus(List<User> userList) throws Exception;
+	
+	public void loginUser(User user) throws Exception;
 	/*public void registerNewUser(User user) throws Exception;
 
 	public void updateUser(User user) throws Exception;

@@ -19,8 +19,8 @@ public class UpdateActiveValidator implements Validator {
 	public void validate(Object object, Errors error) {
 		User user = (User) object;
 		System.out.println("User Id:&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" + user.getUserId());
-//		ValidationUtils.rejectIfEmptyOrWhitespace(error, "userId", "error.userId", "userId is requird");
-//		ValidationUtils.rejectIfEmptyOrWhitespace(error, "active", "error.active", "Active is requird");
+		/*ValidationUtils.rejectIfEmptyOrWhitespace(error, "userId", "error.userId", "userId is requird");
+		ValidationUtils.rejectIfEmptyOrWhitespace(error, "active", "error.active", "Active is requird");*/
 		/*User user = (User) object;*/
 		
 		if(user.getUserId() <= 0)

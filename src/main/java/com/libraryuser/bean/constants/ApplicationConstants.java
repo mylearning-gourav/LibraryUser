@@ -8,6 +8,7 @@ public interface ApplicationConstants {
 	public static final String UPDATE_USER = "/userservice/update";
 	public static final String UPDATE_PASSWORD = "/userservice/updatepassword";
 	public static final String UPDATE_ACTIVE_STATUS = "/userservice/updatestatus";
+	public static final String USER_LOGIN = "/userservice/login";
 	
 	public static final String CONSTANT_TRUE = "true";
 	public static final String CONSTANT_FALSE = "false";
@@ -19,5 +20,7 @@ public interface ApplicationConstants {
 //	public static final String GET_ALL_USER = "/userservice/users";
 	/*public static final String CREATE_EMP = "/rest/emp/create";
 	public static final String DELETE_EMP = "/rest/emp/delete/{id}";*/
+	
+	public static final Integer PASSWORD_STRENGTH = 3001;
 
 }
