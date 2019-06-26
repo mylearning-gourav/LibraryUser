@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	public void addUsers(User user) throws Exception {
 		logger.info("Add User Service");
-		if(this.checkDupicateUser(user.getEmail())) {
+		if(this.checkDuplicateUser(user.getEmail())) {
 			logger.info("Duplicate User");
 			throw new DuplicateRecordException();
 		}
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 	 * @throws Exception
 	 */
 	@Override
-	public boolean checkDupicateUser(String email) throws Exception {
+	public boolean checkDuplicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User Service");
 		return userDao.checkDupicateUser(email);
 	}
@@ -126,13 +126,34 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Login User
 	 * @param user
-	 * @return 
+	 * @return boolean
 	 * @throws Exception
 	 */
 	@Override
-	public void loginUser(User user) throws Exception {
+	public boolean loginUser(User user) throws Exception {
 		logger.info("Login User Service");
-		
+		User inUser = new User();
+		inUser.setEmail(user.getEmail());
+		if(userDao.getUsers(inUser).size() == 1) {
+			String password = userDao.loginUser(user);
+			return this.validateLoginPassword(user.getPassword(), password);
+		}
+		else {
+			logger.error("User Not Found");
+			throw new UserNotFoundException();
+		} 
+	}
+	
+	/**
+	 * Validate Login Password
+	 * @param userPass
+	 * @param dbPass
+	 * @return boolean
+	 * @throws Exception
+	 */
+	private boolean validateLoginPassword(String userPass, String dbPass) {
+		logger.info("Validate Login Password");
+		return CommonUtil.matchPassword(userPass, dbPass) ? true : false;
 	}
 
 }

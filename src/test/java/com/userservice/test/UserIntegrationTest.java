@@ -74,7 +74,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for all users
 	 */
 	@Test
-	public void integrationTestBGetAllUsersSuccess() throws Exception {
+	public void integrationTestBAGetAllUsersSuccess() throws Exception {
 		
 		this.mockMvc.perform(get("/userservice/get"))
 			.andDo(print())
@@ -90,7 +90,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for searching user by id
 	 */
 	@Test
-	public void integrationTestCGetUserByIdSuccess() throws Exception {
+	public void integrationTestBBGetUserByIdSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("id", "2"))
 			.andDo(print())
@@ -105,7 +105,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for searching user by name
 	 */
 	@Test
-	public void integrationTestDGetUserByNameSuccess() throws Exception {
+	public void integrationTestBCGetUserByNameSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("name", "Gourav"))
 			.andDo(print())
@@ -120,7 +120,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for searching user by email
 	 */
 	@Test
-	public void integrationTestEGetUserByEmailSuccess() throws Exception {
+	public void integrationTestBDGetUserByEmailSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("email", "gouravsingh@gmail.com"))
 			.andDo(print())
@@ -135,7 +135,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for searching user by Role
 	 */
 	@Test
-	public void integrationTestFGetUserByRoleSuccess() throws Exception {
+	public void integrationTestBEGetUserByRoleSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("role", "1"))
 			.andDo(print())
@@ -150,7 +150,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for searching user by Role
 	 */
 	@Test
-	public void integrationTestGGetUserByActiveSuccess() throws Exception {
+	public void integrationTestBFGetUserByActiveSuccess() throws Exception {
 		
 		mockMvc.perform(get(ApplicationConstants.GET_USER).param("active", "true"))
 			.andDo(print())
@@ -167,7 +167,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for adding new user
 	 */
 	@Test
-	public void integrationTestHAddUserSuccess() throws Exception {
+	public void integrationTestCAAddUserSuccess() throws Exception {
 		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER)
 				.param("name", "Mani Babu")
@@ -186,7 +186,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for add duplicate user
 	 */
 	@Test
-	public void integrationTestIAddDuplicateUserError() throws Exception {
+	public void integrationTestCBAddDuplicateUserError() throws Exception {
 		
 		mockMvc.perform(post(ApplicationConstants.ADD_USER)
 				.param("name", "Mani Babu")
@@ -206,7 +206,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update user with id null
 	 */
 	@Test
-	public void integrationTestJUpdateUserIdValidationError() throws Exception {
+	public void integrationTestCCUpdateUserIdValidationError() throws Exception {
 
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("name", "Mani Babu")
@@ -225,7 +225,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update user with name null
 	 */
 	@Test
-	public void integrationTestKUpdateUserNameValidationError() throws Exception {
+	public void integrationTestCDUpdateUserNameValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
@@ -244,7 +244,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update user with email null
 	 */
 	@Test
-	public void integrationTestLUpdateUserEmailValidationError() throws Exception {
+	public void integrationTestCEUpdateUserEmailValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
@@ -263,7 +263,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update user with role null
 	 */
 	@Test
-	public void integrationTestMUpdateUserRoleValidationError() throws Exception {
+	public void integrationTestCFUpdateUserRoleValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
@@ -282,7 +282,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update user not found
 	 */
 	@Test
-	public void integrationTestNUpdateUserNotFoundError() throws Exception {
+	public void integrationTestCGUpdateUserNotFoundError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "10")
@@ -302,7 +302,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for update user
 	 */
 	@Test
-	public void integrationTestOUpdateUser() throws Exception {
+	public void integrationTestCHUpdateUser() throws Exception {
 
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "21")
@@ -323,7 +323,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update password with password null
 	 */
 	@Test
-	public void integrationTestPUpdatePasswordValidationError() throws Exception {
+	public void integrationTestDAUpdatePasswordValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
 				.param("userId", "1"))
@@ -338,7 +338,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update password with user id null
 	 */
 	@Test
-	public void integrationTestQUpdatePasswordUserIdValidationError() throws Exception {
+	public void integrationTestDBUpdatePasswordUserIdValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
 				.param("password", "pada_padiba"))
@@ -353,7 +353,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update password with user id negative or 0
 	 */
 	@Test
-	public void integrationTestRUpdatePasswordUserIdZeroValidationError() throws Exception {
+	public void integrationTestDCUpdatePasswordUserIdZeroValidationError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
 				.param("userId", "0")
@@ -369,7 +369,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update password with wrong user id
 	 */
 	@Test
-	public void integrationTestSUpdatePasswordUserNotFoundError() throws Exception {
+	public void integrationTestDDUpdatePasswordUserNotFoundError() throws Exception {
 		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
 				.param("userId", "12")
@@ -385,7 +385,7 @@ public class UserIntegrationTest {
 	 * Test Case Success for update password
 	 */
 	@Test
-	public void integrationTestTUpdatePasswordSuccess() throws Exception {
+	public void integrationTestDEUpdatePasswordSuccess() throws Exception {
 
 		mockMvc.perform(put(ApplicationConstants.UPDATE_PASSWORD)
 				.param("userId", "21")
@@ -402,7 +402,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update active status with user[] null
 	 */
 	@Test
-	public void integrationTestUUpdateActiveValidationError() throws Exception {
+	public void integrationTestEAUpdateActiveValidationError() throws Exception {
 		
 		List<User> users = new ArrayList<User>();
 		
@@ -424,7 +424,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update active status with invalid user id
 	 */
 	@Test
-	public void integrationTestVUpdateActiveValidationError() throws Exception {
+	public void integrationTestEBUpdateActiveValidationError() throws Exception {
 		User user1 = new User(0, null, null, false, 0);
 		User user2 = new User(3, null, null, false, 0);
 		
@@ -451,7 +451,7 @@ public class UserIntegrationTest {
 	 * Test Case Exception for update active status with wrong user id
 	 */
 	@Test
-	public void integrationTestWUpdateActiveWrongUserError() throws Exception {
+	public void integrationTestECUpdateActiveWrongUserError() throws Exception {
 		User user1 = new User(3, null, null, false, 0);
 		User user2 = new User(91, null, null, false, 0);
 		
@@ -479,7 +479,7 @@ public class UserIntegrationTest {
 	 * Test Case success for update active status
 	 */
 	@Test
-	public void integrationTestXUpdateActiveValidationSuccess() throws Exception {
+	public void integrationTestEDUpdateActiveValidationSuccess() throws Exception {
 		User user1 = new User(1, null, null, false, 0);
 		User user2 = new User(3, null, null, false, 0);
 		
@@ -500,5 +500,80 @@ public class UserIntegrationTest {
 				.andExpect(content().contentType("application/json;charset=UTF-8"))
 				.andExpect(jsonPath("$.statusCode", is(2000)))
 				.andExpect(jsonPath("$.statusMessage", is("Success")));
+	}
+	
+	/******************************************Login User Test Cases*****************************************/
+	
+	/*
+	 * Test Case failure for login user invalid input
+	 */
+	@Test
+	public void integrationTestFALoginValidationFailure() throws Exception {
+		mockMvc.perform(post(ApplicationConstants.USER_LOGIN)
+				.param("email", "gouravsingh@gmail.com"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case failure for login user invalid input
+	 */
+	@Test
+	public void integrationTestFBLoginValidationFailure() throws Exception {
+		mockMvc.perform(post(ApplicationConstants.USER_LOGIN)
+				.param("password", "gouravsingh"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(HttpStatus.BAD_REQUEST.value())))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case failure for Invalid email
+	 */
+	@Test
+	public void integrationTestFCLoginWrongEmailFailure() throws Exception {
+		mockMvc.perform(post(ApplicationConstants.USER_LOGIN)
+				.param("email", "aaaa@aaaa.com")
+				.param("password", "aaaaaaaaa"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(3002)))
+			.andExpect(jsonPath("$.status", is("BAD_REQUEST")));
+	}
+	
+	/*
+	 * Test Case failure for Invalid password
+	 */
+	@Test
+	public void integrationTestFDLoginWrongPasswordFailure() throws Exception {
+		mockMvc.perform(post(ApplicationConstants.USER_LOGIN)
+				.param("email", "mani_babu1@gmail.com")
+				.param("password", "aaaaaaaaa"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.errorCode", is(3003)))
+			.andExpect(jsonPath("$.status", is("UNAUTHORIZED")));
+	}
+	
+	/*
+	 * Test Case Success for Login
+	 */
+	@Test
+	public void integrationTestFELoginSuccess() throws Exception {
+		mockMvc.perform(post(ApplicationConstants.USER_LOGIN)
+				.param("email", "mani_babu1@gmail.com")
+				.param("password", "pada_padiba1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("application/json;charset=UTF-8"))
+			.andExpect(jsonPath("$.statusCode", is(2000)))
+			.andExpect(jsonPath("$.statusMessage", is("Success")));
 	}
 }

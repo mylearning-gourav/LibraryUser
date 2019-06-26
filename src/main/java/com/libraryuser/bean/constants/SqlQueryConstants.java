@@ -14,5 +14,8 @@ public interface SqlQueryConstants {
 			+ "update_timestamp = ? WHERE id = ?";
 	public static final String SELECT_DUPLICATE_USER_STATEMENT = "SELECT count(*) totalCount FROM user WHERE email = ?";
 	public static final String UPDATE_ACTIVE_STATUS_STATEMENT = "UPDATE user SET active = ? WHERE id = ?";
+	
+	public static final String SELECT_LOGIN_PASSWORD_STATEMENT = "SELECT p.password as password from password p "
+			+ "INNER JOIN user u on p.user_id = u.id WHERE u.email = ? AND p.active = ?";
 
 }

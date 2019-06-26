@@ -17,6 +17,8 @@ public interface ApplicationConstants {
 	public static final String DUPLICATE_USER_ERROR_MESSAGE = "User Already Exists!";
 	public static final Integer USER_NOT_FOUND_ERROR_CODE = 3002;
 	public static final String USER_NOT_FOUND_ERROR_MESSAGE = "User Does not Exist!";
+	public static final Integer WRONG_PASSWORD_ERROR_CODE = 3003;
+	public static final String WRONG_PASSWORD_ERROR_MESSAGE = "Wrong Password Entered!";
 //	public static final String GET_ALL_USER = "/userservice/users";
 	/*public static final String CREATE_EMP = "/rest/emp/create";
 	public static final String DELETE_EMP = "/rest/emp/delete/{id}";*/

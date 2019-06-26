@@ -21,6 +21,7 @@ import com.libraryuser.bean.ResultBean;
 import com.libraryuser.bean.constants.ApplicationConstants;
 import com.libraryuser.exception.BadRequestException;
 import com.libraryuser.exception.RequestValidationException;
+import com.libraryuser.exception.WrongPasswordException;
 import com.libraryuser.model.User;
 import com.libraryuser.service.UserService;
 import com.libraryuser.validator.LoginUserValidator;
@@ -190,7 +191,6 @@ public class UserController {
 			binder.setValidator(updateActiveValidator);
 			binder.validate();
 			BindingResult result = binder.getBindingResult();
-			System.out.println("User Id:!!!!!!!!!!!!!!!!!!!!!!!!!" + user.getUserId());
 			
 			if(result.hasErrors()) {
 				logger.error("Update active request not valid");
@@ -219,11 +219,15 @@ public class UserController {
 		}
 		else {
 			logger.info("User Login Request");
-//			userService.updatePassword(user);
+			if(userService.loginUser(user)) {
+				return ResultBean.getInstance();
+			}
+			else {
+				throw new WrongPasswordException();
+			}
 		}
 		
-		ResultBean resultBean = ResultBean.getInstance();
-		return resultBean;
+		
 	}
 	
 	/***************************************************************************************************/

@@ -107,6 +107,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.OK);
 	}
 	
+	/**
+	 * WrongPasswordException Handler function
+	 * @param 
+	 * @return ResponseEntity
+	 * @throws 
+	 */
+	@ExceptionHandler(WrongPasswordException.class)
+	public ResponseEntity<ApiErrorResponse> wrongPasswordExceptionHandler(Exception ex) {
+		logger.info("Wrong Password Exception");
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
+
+		error.setStatus(HttpStatus.UNAUTHORIZED);
+		error.setErrorCode(ApplicationConstants.WRONG_PASSWORD_ERROR_CODE);
+        error.setMessage(ApplicationConstants.WRONG_PASSWORD_ERROR_MESSAGE);
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.OK);
+	}
+	
 	/*@ExceptionHandler(BadRequestException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason = "Bad Request URL")
 	public @ResponseBody ResultBean handleBadRequestException() {

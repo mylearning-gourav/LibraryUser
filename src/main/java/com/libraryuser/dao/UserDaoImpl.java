@@ -349,9 +349,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @throws Exception
 	 */
 	@Override
-	public void loginUser(User user) throws Exception {
-		// TODO Auto-generated method stub
+	public String loginUser(User user) throws Exception {
+		logger.info("Login User DAO");
+		String selectStatement = SqlQueryConstants.SELECT_LOGIN_PASSWORD_STATEMENT;
 		
+		return jdbcTemplate.queryForObject(selectStatement, new Object[] { user.getEmail(), 1 }, String.class);
 	}
 	
 	/**

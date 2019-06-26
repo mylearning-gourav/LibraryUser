@@ -4,10 +4,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.libraryuser.bean.constants.ApplicationConstants;
-import com.libraryuser.service.UserServiceImpl;
 
 public class CommonUtil {
 	
@@ -19,11 +17,14 @@ public class CommonUtil {
 	}
 	
 	public static String getEncryptPassword(String password) {
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(ApplicationConstants.PASSWORD_STRENGTH);
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		logger.info("Encrypted Password");
 		logger.info("Password: " + password);
-		logger.info("Encrypted Password: " + passwordEncoder.encode(password));
-		return passwordEncoder.encode(password);
+		logger.info("Encrypted Password: " + BCrypt.hashpw(password, BCrypt.gensalt()));
+		return BCrypt.hashpw(password, BCrypt.gensalt());
+	}
+	
+	public static boolean matchPassword(String userPass, String dbPass) {
+		return BCrypt.checkpw(userPass, dbPass);
 	}
 
 }
