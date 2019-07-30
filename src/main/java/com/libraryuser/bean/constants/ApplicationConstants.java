@@ -24,5 +24,6 @@ public interface ApplicationConstants {
 	public static final String DELETE_EMP = "/rest/emp/delete/{id}";*/
 	
 	public static final Integer PASSWORD_STRENGTH = 3001;
-
+	
+	
 }

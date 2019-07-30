@@ -15,7 +15,6 @@ public class AppInitializer implements WebApplicationInitializer {
 
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
-//		appContext.scan("com.libraryuser.exception");
 		appContext.register(AppConfiguration.class);
 		appContext.setServletContext(servletContext);
 		

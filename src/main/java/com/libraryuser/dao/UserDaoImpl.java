@@ -153,7 +153,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @throws Exception
 	 */
 	@Override
-	public void updateUser(User user) throws Exception {
+	public void updateUser(final User user) throws Exception {
 		logger.info("Update User DAO");
 		
 		String updateStatement = SqlQueryConstants.UPDATE_USER_STATEMENT;
@@ -198,9 +198,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return int
 	 * @throws Exception
 	 */
-	private Integer insertUser(User user) throws Exception {
+	private Integer insertUser(final User user) throws Exception {
 		logger.info("Insert User DAO");
-		String insertStatement = SqlQueryConstants.INSERT_USER_STATEMENT;
+		final String insertStatement = SqlQueryConstants.INSERT_USER_STATEMENT;
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -260,7 +260,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 		String updateStatement = SqlQueryConstants.UPDATE_ACTIVE_STATUS_STATEMENT;
 		try {
-			for(User user : userList) {
+			for(final User user : userList) {
 				if(!this.checkUserId(user.getUserId())) {
 					throw new UserNotFoundException();
 				}
@@ -302,7 +302,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	private void deactivateOldPassword(int id) {
+	private void deactivateOldPassword(final int id) {
 		logger.info("Deactivate Old Password DAO");
 		String updateStatement = SqlQueryConstants.DEACTIVATE_OLD_PASSWORD_STATEMENT;
 		
@@ -325,7 +325,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	private void insertPassword(int id, String password) {
+	private void insertPassword(final int id, final String password) {
 		logger.info("Insert Password DAO");
 		String insertStatement = SqlQueryConstants.INSERT_PASSWORD_STATEMENT;
 		

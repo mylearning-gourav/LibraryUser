@@ -226,8 +226,6 @@ public class UserController {
 				throw new WrongPasswordException();
 			}
 		}
-		
-		
 	}
 	
 	/***************************************************************************************************/

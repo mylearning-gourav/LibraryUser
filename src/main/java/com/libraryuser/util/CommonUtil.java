@@ -11,18 +11,35 @@ public class CommonUtil {
 	
 	private static final Logger logger = Logger.getLogger(CommonUtil.class);
 	
+	/**
+	 * Get Current Timestamp
+	 * @param 
+	 * @return Timestamp
+	 * @throws 
+	 */
 	public static Timestamp getCurrentTimestamp() {
 		Timestamp ts = Timestamp.valueOf(LocalDateTime.now());
 		return ts;
 	}
 	
+	/**
+	 * Get Encrypted Password
+	 * @param password
+	 * @return encryptedPassword
+	 * @throws 
+	 */
 	public static String getEncryptPassword(String password) {
 		logger.info("Encrypted Password");
-		logger.info("Password: " + password);
-		logger.info("Encrypted Password: " + BCrypt.hashpw(password, BCrypt.gensalt()));
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
+	/**
+	 * Validate user entered password for login
+	 * @param userPass
+	 * @param dbPass
+	 * @return boolean
+	 * @throws 
+	 */
 	public static boolean matchPassword(String userPass, String dbPass) {
 		return BCrypt.checkpw(userPass, dbPass);
 	}
