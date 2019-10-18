@@ -22,7 +22,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages="com.libraryuser")
-@PropertySource(value= {"classpath:/properties/application-default.properties"})
+//@PropertySource(value= {"classpath:/properties/application-dev.properties"})
+@PropertySource(value= {"classpath:application.properties"})
 public class AppConfiguration {
 	
 	private static final Logger logger = Logger.getLogger(AppConfiguration.class);
