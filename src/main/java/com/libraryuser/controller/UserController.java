@@ -228,6 +228,15 @@ public class UserController {
 		}
 	}
 	
+	/***************************************************************************************************/
+	@RequestMapping(value="/nana/nani", method=RequestMethod.PUT)
+	public ResultBean updateUser1(@ModelAttribute("user") User user) throws Exception {
+			throw new RequestValidationException("Update user requests not valid");
+	}
+	/***************************************************************************************************/
+	
+	
+	
 	/**
 	 * Health Check Service
 	 * @Param 
