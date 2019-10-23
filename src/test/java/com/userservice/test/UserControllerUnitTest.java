@@ -338,9 +338,6 @@ public class UserControllerUnitTest {
 	@Test
 	public void testUpdateUserValidationSuccess() throws Exception {
 		
-		/*doThrow(DuplicateRecordException.class)
-	      .when(userService).addUsers(isA(User.class));*/
-		
 		mockMvc.perform(put(ApplicationConstants.UPDATE_USER)
 				.param("userId", "1")
 				.param("name", "Mani Babu")
