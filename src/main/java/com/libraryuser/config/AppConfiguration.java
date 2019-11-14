@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages="com.libraryuser")
 //@PropertySource(value= {"classpath:/properties/application-dev.properties"})
 @PropertySource(value= {"classpath:application.properties"})
-public class AppConfiguration {
+public class AppConfiguration extends WebMvcConfigurerAdapter {
 	
 	private static final Logger logger = Logger.getLogger(AppConfiguration.class);
 	
