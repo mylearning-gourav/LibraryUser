@@ -1,4 +1,4 @@
-package com.userservice.test;
+package com.libraryuser.test;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
