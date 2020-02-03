@@ -152,7 +152,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updateUser(final User user) throws Exception {
 		logger.info("Update User DAO");
 		
@@ -179,7 +178,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return Boolean
 	 * @throws Exception
 	 */
-	@Override
 	public boolean checkDupicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User DAO");
 		String selectStatement = SqlQueryConstants.SELECT_DUPLICATE_USER_STATEMENT;
@@ -205,8 +203,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
-		    	@Override
-		        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+		    	public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 		            PreparedStatement ps =
 		                connection.prepareStatement(insertStatement, new String[] {"id"});
 		            ps.setString(1, user.getName());  
@@ -228,7 +225,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updatePassword(User user) throws Exception {
 		logger.info("Update Password DAO");
 		TransactionDefinition txDef = new DefaultTransactionDefinition();
@@ -251,7 +247,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updateActiveStatus(List<User> userList) throws Exception {
 		logger.info("Update Active Status DAO");
 		
@@ -265,7 +260,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 					throw new UserNotFoundException();
 				}
 				jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
-					@Override  
 					public Boolean doInPreparedStatement(PreparedStatement ps)  
 				            throws SQLException, DataAccessException {  
 				              
@@ -307,7 +301,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		String updateStatement = SqlQueryConstants.DEACTIVATE_OLD_PASSWORD_STATEMENT;
 		
 		jdbcTemplate.execute(updateStatement, new PreparedStatementCallback<Boolean>() {
-			@Override  
 			public Boolean doInPreparedStatement(PreparedStatement ps)  
 		            throws SQLException, DataAccessException {  
 		              
@@ -330,7 +323,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		String insertStatement = SqlQueryConstants.INSERT_PASSWORD_STATEMENT;
 		
 		jdbcTemplate.execute(insertStatement, new PreparedStatementCallback<Boolean>() {
-			@Override  
 			public Boolean doInPreparedStatement(PreparedStatement ps)  
 		            throws SQLException, DataAccessException {  
 		              
@@ -348,7 +340,6 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public String loginUser(User user) throws Exception {
 		logger.info("Login User DAO");
 		String selectStatement = SqlQueryConstants.SELECT_LOGIN_PASSWORD_STATEMENT;

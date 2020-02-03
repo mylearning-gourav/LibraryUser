@@ -10,12 +10,10 @@ import com.libraryuser.model.User;
 @Component
 public class UpdateActiveValidator implements Validator {
 
-	@Override
 	public boolean supports(Class cls) {
 		return User.class.isAssignableFrom(cls);
 	}
 
-	@Override
 	public void validate(Object object, Errors error) {
 		User user = (User) object;
 		System.out.println("User Id:&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" + user.getUserId());

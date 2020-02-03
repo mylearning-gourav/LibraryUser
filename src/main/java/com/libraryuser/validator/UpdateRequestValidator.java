@@ -12,12 +12,10 @@ import ch.qos.logback.classic.Logger;
 @Component
 public class UpdateRequestValidator implements Validator {
 
-	@Override
 	public boolean supports(Class cls) {
 		return User.class.isAssignableFrom(cls);
 	}
 
-	@Override
 	public void validate(Object object, Errors error) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(error, "userId", "error.userId", "userId is requird");
 		

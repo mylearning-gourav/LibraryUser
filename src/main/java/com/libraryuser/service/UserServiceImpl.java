@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updateUser(User user) throws Exception {
 		logger.info("Update User Service");
 		User inUser = new User();
@@ -84,7 +83,6 @@ public class UserServiceImpl implements UserService {
 	 * @return Boolean
 	 * @throws Exception
 	 */
-	@Override
 	public boolean checkDuplicateUser(String email) throws Exception {
 		logger.info("Check Duplicate User Service");
 		return userDao.checkDupicateUser(email);
@@ -96,7 +94,6 @@ public class UserServiceImpl implements UserService {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updatePassword(User user) throws Exception {
 		logger.info("Update Password Service");
 		User inUser = new User();
@@ -117,7 +114,6 @@ public class UserServiceImpl implements UserService {
 	 * @return 
 	 * @throws Exception
 	 */
-	@Override
 	public void updateActiveStatus(List<User> userList) throws Exception {
 		logger.info("Update Active Status Service");
 		userDao.updateActiveStatus(userList);
@@ -129,7 +125,6 @@ public class UserServiceImpl implements UserService {
 	 * @return boolean
 	 * @throws Exception
 	 */
-	@Override
 	public boolean loginUser(User user) throws Exception {
 		logger.info("Login User Service");
 		User inUser = new User();
