@@ -18,7 +18,9 @@ public class AppInitializer implements WebApplicationInitializer {
 		appContext.register(AppConfiguration.class);
 		appContext.setServletContext(servletContext);
 		
-		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(appContext));
+		DispatcherServlet dispatchServlet = new DispatcherServlet(appContext);
+		dispatchServlet.setThrowExceptionIfNoHandlerFound(true);
+		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", dispatchServlet);
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
 	}

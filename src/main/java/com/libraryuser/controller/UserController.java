@@ -259,12 +259,12 @@ public class UserController {
 	 * @return ResultBean
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/**", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
+	/*@RequestMapping(value="/**", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 	public void allOtherAccessTypeOtherRequest() throws Exception {
-//		logger.debug("Bad Get Request Controller");
+		logger.debug("Bad Get Request Controller");
 		logger.info("Wrong Controller Method Called");
 		throw new BadRequestException();
-	}
+	}*/
 
 	/*@ExceptionHandler({Exception.class})
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)

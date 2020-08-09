@@ -3,6 +3,7 @@ package com.libraryuser.exception;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -10,13 +11,29 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.libraryuser.bean.ApiErrorResponse;
 import com.libraryuser.bean.constants.ApplicationConstants;
-import com.libraryuser.dao.UserDaoImpl;
 
-@EnableWebMvc
-@ControllerAdvice(basePackages = {"com.libraryuser.controller"} )
+//@EnableWebMvc
+//@ControllerAdvice(basePackages = {"com.libraryuser.controller"} )
+@ControllerAdvice
 public class GlobalExceptionHandler {
 	
 	private static final Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
+	
+	/**
+	 * NoHandlerFoundException Handler function
+	 * @param Exception
+	 * @return ResponseEntity
+	 * @throws 
+	 */
+	@ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
+	public ResponseEntity<ApiErrorResponse> handlerNoHandlerFoundException(Exception ex) {
+		logger.error("Exception No Handler Found : " + ex.getMessage());
+		ApiErrorResponse error = ApiErrorResponse.getInstance();
+		error.setStatus(HttpStatus.NOT_FOUND);
+		error.setErrorCode(HttpStatus.NOT_FOUND.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
 	
 	/**
 	 * Exception Handler function
@@ -33,15 +50,8 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         return new ResponseEntity<ApiErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-	/*@ExceptionHandler(Exception.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public @ResponseBody ResultBean handleException(Exception ex) {
-//		logger.error("Exception : " + ex.getMessage());
-		ResultBean resultBean = new ResultBean();
-		resultBean.setStatusCode(3000);
-		resultBean.setStatusMessage("Unknown Exception");
-		return resultBean;
-	}*/
+	
+
 	
 	/**
 	 * BadRequestException Handler function

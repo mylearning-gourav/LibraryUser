@@ -12,6 +12,7 @@
 		<java.version>1.8</java.version>
 		<logback.version>1.2.3</logback.version>
 		<spring.version>4.3.4.RELEASE</spring.version>
+		<swagger.version>2.7.0</swagger.version>
 	</properties>
 	
 	<dependencies>
@@ -70,13 +71,6 @@
 		   <artifactId>jackson-databind</artifactId>
 		   <version>2.5.0</version>
 		</dependency>
-		<!--  Gson: Java to Json conversion -->
-	    <!-- <dependency>
-	        <groupId>com.google.code.gson</groupId>
-	        <artifactId>gson</artifactId>
-	        <version>2.2.2</version>
-	        <scope>compile</scope>
-	    </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -110,61 +104,13 @@
 		<dependency>
 	        <groupId>io.springfox</groupId>
 	        <artifactId>springfox-swagger2</artifactId>
-	        <version>2.6.1</version>
-			<scope>compile</scope>
+	        <version>${swagger.version}</version>
 	    </dependency>
 	    <dependency>
 	        <groupId>io.springfox</groupId>
 	        <artifactId>springfox-swagger-ui</artifactId>
-	        <version>2.6.1</version>
-			<scope>compile</scope>
+	        <version>${swagger.version}</version>
 	    </dependency>
-	    <!-- <dependency>
-	        <groupId>org.webjars</groupId>
-	        <artifactId>bootstrap</artifactId>
-	        <version>3.3.5</version>
-	    </dependency> -->
-		
-		
-		<!-- <dependency>
-			<groupId>org.slf4j</groupId>
-	      	<artifactId>slf4j-api</artifactId>
-	      	<version>1.7.7</version>
-	  	</dependency>
-	
-	  	<dependency>
-	      	<groupId>org.slf4j</groupId>
-	      	<artifactId>jul-to-slf4j</artifactId>
-	      	<version>1.7.7</version>
-	  	</dependency>
-	
-	  	<dependency>
-	      	<groupId>org.slf4j</groupId>
-	      	<artifactId>jcl-over-slf4j</artifactId>
-	      	<version>1.7.7</version>
-	  	</dependency>
-	
-	  	<dependency>
-	      	<groupId>org.slf4j</groupId>
-	      	<artifactId>log4j-over-slf4j</artifactId>
-	      	<version>1.7.7</version>
-	  	</dependency>
-	
-	  	<dependency>
-	      	<groupId>org.slf4j</groupId>
-	     	<artifactId>slf4j-jdk14</artifactId>
-	      	<version>1.7.7</version>
-	  	</dependency> -->
-  
-  
-  
-  
-  
-        
-        <!-- <dependency>
-		   <groupId>com.fasterxml.jackson.datatype</groupId>
-		   <artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency> -->
 		
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
 		<dependency>
@@ -287,6 +233,13 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>application.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>log4j.properties</include>
                 </includes>
             </resource>
         </resources>

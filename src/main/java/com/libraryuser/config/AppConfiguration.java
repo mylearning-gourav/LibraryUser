@@ -14,6 +14,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /*
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages="com.libraryuser")
 //@PropertySource(value= {"classpath:/properties/application-dev.properties"})
 @PropertySource(value= {"classpath:application.properties"})
+//@EnableSwagger2
 public class AppConfiguration extends WebMvcConfigurerAdapter {
 	
 	private static final Logger logger = Logger.getLogger(AppConfiguration.class);
@@ -80,4 +83,10 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
 		
 		return txManager;
 	}
+	
+	@Override 
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 }
