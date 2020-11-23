@@ -20,10 +20,11 @@ public class ResultBean {
 	private static ResultBean resultBean;
     
     public static ResultBean getInstance() {
-    	if(resultBean == null) {
+    	/*if(resultBean == null) {
     		resultBean = new ResultBean();
     	}
-    	return resultBean;
+    	return resultBean;*/
+    	return new ResultBean();
     }
 	
 	/*public ResultBean(int statusCode, String statusMessage, HashMap<String, List> result) {
